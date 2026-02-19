@@ -12,7 +12,8 @@ body {
     user-select: none;
 }
 
-/* Title Bar */
+/* ========== TITLE BAR ========== */
+
 .title-bar {
     height: 32px;
     background: #000;
@@ -49,16 +50,22 @@ body {
 }
 
 .window-btn:hover {
+    background: #282828;
+}
+
+.close-btn:hover {
     background: #ff5f57;
 }
 
-/* App Container */
+/* ========== APP CONTAINER ========== */
+
 .app-container {
     display: flex;
     height: calc(100vh - 32px - 90px);
 }
 
-/* Sidebar */
+/* ========== SIDEBAR ========== */
+
 .sidebar {
     width: 280px;
     background: #000;
@@ -147,7 +154,8 @@ body {
     margin-bottom: 4px;
 }
 
-/* Main Content */
+/* ========== MAIN CONTENT ========== */
+
 .main-content {
     flex: 1;
     background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
@@ -163,7 +171,8 @@ body {
     display: block;
 }
 
-/* Search */
+/* ========== SEARCH ========== */
+
 .search-header {
     display: flex;
     gap: 12px;
@@ -208,7 +217,24 @@ body {
     transform: scale(0.96);
 }
 
-/* Results Grid */
+.btn-secondary {
+    padding: 10px 24px;
+    background: #282828;
+    border: none;
+    border-radius: 500px;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+}
+
+.btn-secondary:hover {
+    background: #3e3e3e;
+}
+
+/* ========== RESULTS GRID ========== */
+
 .results-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -222,19 +248,25 @@ body {
     cursor: pointer;
     transition: all 0.3s;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .track-card:hover {
     background: #282828;
-    transform: translateY(-4px);
 }
 
-.track-card img {
+.track-cover {
     width: 100%;
     aspect-ratio: 1;
     border-radius: 4px;
     margin-bottom: 12px;
     object-fit: cover;
+}
+
+.track-info {
+    flex: 1;
+    margin-bottom: 8px;
 }
 
 .track-name {
@@ -254,38 +286,57 @@ body {
     white-space: nowrap;
 }
 
-.play-btn-overlay {
-    position: absolute;
-    bottom: 100px;
-    right: 24px;
-    width: 48px;
-    height: 48px;
+.track-actions {
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.track-card:hover .track-actions {
+    opacity: 1;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
     background: #1db954;
     border: none;
     border-radius: 50%;
     color: #fff;
-    font-size: 20px;
+    font-size: 14px;
     cursor: pointer;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: all 0.3s;
+    transition: all 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 24px rgba(0,0,0,.5);
 }
 
-.track-card:hover .play-btn-overlay {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.play-btn-overlay:hover {
-    transform: scale(1.06);
+.btn-icon:hover {
     background: #1ed760;
+    transform: scale(1.1);
 }
 
-/* Welcome Message */
+/* ========== FEATURES BADGES ========== */
+
+.features-list {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 24px;
+}
+
+.feature-badge {
+    padding: 8px 16px;
+    background: #1db954;
+    border-radius: 500px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* ========== WELCOME MESSAGE ========== */
+
 .welcome-message {
     grid-column: 1 / -1;
     text-align: center;
@@ -302,11 +353,18 @@ body {
     color: #b3b3b3;
 }
 
-/* Loading & Empty States */
+/* ========== LOADING & EMPTY STATES ========== */
+
 .loading {
     text-align: center;
     padding: 40px;
     color: #b3b3b3;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
 }
 
 .empty-state {
@@ -316,7 +374,8 @@ body {
     font-size: 16px;
 }
 
-/* Playlists Grid */
+/* ========== PLAYLISTS ========== */
+
 .playlists-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -357,7 +416,15 @@ body {
     overflow: hidden;
 }
 
-/* Queue List */
+/* ========== QUEUE ========== */
+
+.queue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
 .queue-list {
     display: flex;
     flex-direction: column;
@@ -371,30 +438,100 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
+    transition: background 0.2s;
 }
 
-.queue-item img {
+.queue-item:hover {
+    background: #282828;
+}
+
+.queue-index {
+    font-size: 14px;
+    color: #b3b3b3;
+    min-width: 24px;
+}
+
+.queue-cover {
     width: 48px;
     height: 48px;
     border-radius: 4px;
+    object-fit: cover;
 }
 
 .queue-item-info {
     flex: 1;
+    overflow: hidden;
 }
 
 .queue-item-name {
     font-weight: 500;
     font-size: 14px;
     margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .queue-item-artist {
     font-size: 12px;
     color: #b3b3b3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-/* Player Bar */
+.queue-duration {
+    font-size: 12px;
+    color: #b3b3b3;
+    margin-right: 12px;
+}
+
+/* ========== LYRICS ========== */
+
+.lyrics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.lyrics-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.lyrics-header-info {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #282828;
+}
+
+.lyrics-header-info h3 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.lyrics-header-info p {
+    font-size: 16px;
+    color: #b3b3b3;
+}
+
+.lyrics-text {
+    line-height: 2;
+    font-size: 18px;
+    color: #fff;
+    white-space: pre-wrap;
+    text-align: center;
+}
+
+.lyrics-track-info {
+    font-size: 14px !important;
+    margin-top: 8px !important;
+}
+
+/* ========== PLAYER BAR ========== */
+
 .player-bar {
     height: 90px;
     background: #181818;
@@ -403,6 +540,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
+    gap: 16px;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -447,12 +585,22 @@ body {
     white-space: nowrap;
 }
 
+/* ========== PLAYER CONTROLS CENTER ========== */
+
+.player-controls-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 40%;
+    max-width: 722px;
+}
+
 .player-controls {
     display: flex;
     align-items: center;
     gap: 16px;
     justify-content: center;
-    width: 40%;
 }
 
 .control-btn {
@@ -467,7 +615,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
 }
 
 .control-btn:hover {
@@ -475,17 +622,77 @@ body {
     transform: scale(1.06);
 }
 
+.control-btn.active {
+    color: #1db954;
+}
+
 .control-btn-main {
     width: 40px;
     height: 40px;
     background: #fff;
     color: #000;
-    font-size: 20px;
 }
 
 .control-btn-main:hover {
     transform: scale(1.06);
 }
+
+/* ========== PROGRESS BAR ========== */
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.time-display {
+    font-size: 11px;
+    color: #b3b3b3;
+    min-width: 40px;
+    text-align: center;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 4px;
+    background: #4d4d4d;
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #1db954;
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.progress-handle {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s;
+    cursor: grab;
+}
+
+.progress-handle:active {
+    cursor: grabbing;
+}
+
+.progress-bar:hover .progress-handle {
+    opacity: 1;
+}
+
+/* ========== VOLUME ========== */
 
 .player-volume {
     display: flex;
@@ -520,13 +727,89 @@ body {
     transform: scale(1.2);
 }
 
-#volumeValue {
+.volume-value {
     font-size: 12px;
     color: #b3b3b3;
     min-width: 40px;
 }
 
-/* Scrollbar */
+/* ========== TOAST NOTIFICATIONS ========== */
+
+.toast-container {
+    position: fixed;
+    top: 48px;
+    right: 24px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.toast {
+    background: #282828;
+    color: #fff;
+    padding: 16px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    transform: translateX(400px);
+    opacity: 0;
+    transition: all 0.3s ease-out;
+}
+
+.toast.toast-show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-icon {
+    font-size: 20px;
+}
+
+.toast-message {
+    flex: 1;
+    font-size: 14px;
+}
+
+.toast-success {
+    border-left: 4px solid #1db954;
+}
+
+.toast-error {
+    border-left: 4px solid #ff5f57;
+}
+
+.toast-info {
+    border-left: 4px solid #1e90ff;
+}
+
+.toast-warning {
+    border-left: 4px solid #ffa500;
+}
+
+/* ========== MINI MODE ========== */
+
+body.mini-mode .sidebar,
+body.mini-mode .main-content {
+    display: none;
+}
+
+body.mini-mode .player-bar {
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    position: static;
+}
+
+body.mini-mode .app-container {
+    height: 0;
+}
+
+/* ========== SCROLLBAR ========== */
+
 ::-webkit-scrollbar {
     width: 12px;
 }
@@ -542,4 +825,38 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #3e3e3e;
+}
+
+/* ========== ANIMATIONS ========== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.track-card {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+    
+    .player-controls-center {
+        width: 50%;
+    }
+    
+    .player-track-info,
+    .player-volume {
+        width: 25%;
+    }
 }
