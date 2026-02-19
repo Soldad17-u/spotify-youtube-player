@@ -28,6 +28,11 @@ export const resumePlayback = async () => {
   return response.data;
 };
 
+export const playPrevious = async () => {
+  const response = await api.post('/previous');
+  return response.data;
+};
+
 export const playNext = async () => {
   const response = await api.post('/next');
   return response.data;
