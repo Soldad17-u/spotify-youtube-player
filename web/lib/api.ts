@@ -1,6 +1,7 @@
-import axios from 'axios';
+import axios from 'axios'
+import type { Track, Playlist, QueueItem } from '@/types'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 const api = axios.create({
   baseURL: API_URL,
@@ -8,103 +9,158 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-});
+})
 
-// Types
-export interface Track {
-  id: string;
-  name: string;
-  artist: string;
-  album: string;
-  album_art: string | null;
-  duration: number;
-  file_path?: string;
+// Search
+export const searchTracks = async (query: string): Promise<Track[]> => {
+  const response = await api.get('/search', { params: { q: query, limit: 20 } })
+  return response.data.tracks
 }
 
-export interface PlayerStatus {
-  is_playing: boolean;
-  current_track: Track | null;
-  position: number;
-  duration: number;
-  volume: number;
-  shuffle: boolean;
-  repeat: string;
-  queue_length: number;
+// Playback
+export const playTrack = async (trackId: string) => {
+  const response = await api.post(`/play/${trackId}`)
+  return response.data
 }
 
-export interface SearchResult {
-  tracks: any[];
+export const pausePlayback = async () => {
+  const response = await api.post('/pause')
+  return response.data
 }
 
-// API Methods
-export const playerAPI = {
-  // Playback
-  play: (trackId: string) => api.post(`/play/${trackId}`),
-  pause: () => api.post('/pause'),
-  resume: () => api.post('/resume'),
-  stop: () => api.post('/stop'),
-  next: () => api.post('/next'),
-  
-  // Position
-  getPosition: () => api.get('/position'),
-  seek: (position: number) => api.post(`/seek/${position}`),
-  
-  // Volume
-  setVolume: (level: number) => api.post(`/volume/${level}`),
-  getVolume: () => api.get('/volume'),
-  
-  // Shuffle & Repeat
-  toggleShuffle: () => api.post('/shuffle/toggle'),
-  cycleRepeat: () => api.post('/repeat/cycle'),
-  
-  // Status
-  getStatus: () => api.get<PlayerStatus>('/status'),
-  
-  // Search
-  search: (query: string, limit = 20) => api.get<SearchResult>('/search', { params: { q: query, limit } }),
-  
-  // Track info
-  getTrack: (trackId: string) => api.get(`/track/${trackId}`),
-  
-  // Queue
-  addToQueue: (trackId: string) => api.post(`/queue/add/${trackId}`),
-  getQueue: () => api.get('/queue'),
-  clearQueue: () => api.post('/queue/clear'),
-  
-  // Favorites
-  getFavorites: (limit = 100, offset = 0) => api.get('/favorites', { params: { limit, offset } }),
-  addFavorite: (trackId: string) => api.post(`/favorites/${trackId}`),
-  removeFavorite: (trackId: string) => api.delete(`/favorites/${trackId}`),
-  checkFavorite: (trackId: string) => api.get(`/favorites/check/${trackId}`),
-  
-  // History
-  getHistory: (limit = 50, offset = 0) => api.get('/history', { params: { limit, offset } }),
-  getRecentTracks: (limit = 20) => api.get('/history/recent', { params: { limit } }),
-  getMostPlayed: (limit = 20) => api.get('/history/most-played', { params: { limit } }),
-  
-  // Playlists
-  getPlaylists: (limit = 50) => api.get('/playlists', { params: { limit } }),
-  getPlaylistTracks: (playlistId: string) => api.get(`/playlist/${playlistId}`),
-  downloadPlaylist: (playlistId: string) => api.post(`/playlist/download/${playlistId}`),
-  getPlaylistProgress: (playlistId: string) => api.get(`/playlist/download/progress/${playlistId}`),
-  
-  // Equalizer
-  getEqualizer: () => api.get('/equalizer'),
-  setEqualizerBand: (band: string, value: number) => api.post(`/equalizer/band/${band}/${value}`),
-  loadEqualizerPreset: (preset: string) => api.post(`/equalizer/preset/${preset}`),
-  getEqualizerPresets: () => api.get('/equalizer/presets'),
-  toggleEqualizer: () => api.post('/equalizer/toggle'),
-  
-  // Visualizer
-  getVisualizer: () => api.get('/visualizer'),
-  toggleVisualizer: () => api.post('/visualizer/toggle'),
-  setVisualizerSmoothing: (factor: number) => api.post(`/visualizer/smoothing/${factor}`),
-  
-  // Statistics
-  getStatistics: () => api.get('/statistics'),
-  
-  // Cache
-  getCacheStats: () => api.get('/cache/stats'),
-};
+export const resumePlayback = async () => {
+  const response = await api.post('/resume')
+  return response.data
+}
 
-export default api;
+export const playNext = async () => {
+  const response = await api.post('/next')
+  return response.data
+}
+
+export const seekTo = async (position: number) => {
+  const response = await api.post(`/seek/${position}`)
+  return response.data
+}
+
+// Queue
+export const addToQueue = async (trackId: string) => {
+  const response = await api.post(`/queue/add/${trackId}`)
+  return response.data
+}
+
+export const getQueue = async (): Promise<QueueItem[]> => {
+  const response = await api.get('/queue')
+  return response.data.queue
+}
+
+export const clearQueue = async () => {
+  const response = await api.post('/queue/clear')
+  return response.data
+}
+
+// Status
+export const getStatus = async () => {
+  const response = await api.get('/status')
+  return response.data
+}
+
+export const getPosition = async () => {
+  const response = await api.get('/position')
+  return response.data
+}
+
+// Volume
+export const setVolume = async (level: number) => {
+  const response = await api.post(`/volume/${level}`)
+  return response.data
+}
+
+export const getVolume = async () => {
+  const response = await api.get('/volume')
+  return response.data
+}
+
+// Shuffle & Repeat
+export const toggleShuffle = async () => {
+  const response = await api.post('/shuffle/toggle')
+  return response.data
+}
+
+export const cycleRepeat = async () => {
+  const response = await api.post('/repeat/cycle')
+  return response.data
+}
+
+// Playlists
+export const getPlaylists = async (): Promise<Playlist[]> => {
+  const response = await api.get('/playlists')
+  return response.data.playlists
+}
+
+export const getPlaylistTracks = async (playlistId: string): Promise<Track[]> => {
+  const response = await api.get(`/playlist/${playlistId}`)
+  return response.data.tracks
+}
+
+// Equalizer
+export const getEqualizer = async () => {
+  const response = await api.get('/equalizer')
+  return response.data
+}
+
+export const setEqualizerBand = async (band: string, value: number) => {
+  const response = await api.post(`/equalizer/band/${band}/${value}`)
+  return response.data
+}
+
+export const loadEqualizerPreset = async (preset: string) => {
+  const response = await api.post(`/equalizer/preset/${preset}`)
+  return response.data
+}
+
+// Favorites
+export const getFavorites = async () => {
+  const response = await api.get('/favorites')
+  return response.data.favorites
+}
+
+export const addFavorite = async (trackId: string) => {
+  const response = await api.post(`/favorites/${trackId}`)
+  return response.data
+}
+
+export const removeFavorite = async (trackId: string) => {
+  const response = await api.delete(`/favorites/${trackId}`)
+  return response.data
+}
+
+export const checkFavorite = async (trackId: string) => {
+  const response = await api.get(`/favorites/check/${trackId}`)
+  return response.data.is_favorite
+}
+
+// History
+export const getRecentTracks = async () => {
+  const response = await api.get('/history/recent')
+  return response.data.tracks
+}
+
+export const getMostPlayed = async () => {
+  const response = await api.get('/history/most-played')
+  return response.data.tracks
+}
+
+// Statistics
+export const getStatistics = async () => {
+  const response = await api.get('/statistics')
+  return response.data
+}
+
+// Lyrics
+export const getLyrics = async (trackId: string) => {
+  const response = await api.get(`/lyrics/${trackId}`)
+  return response.data
+}
+
+export default api

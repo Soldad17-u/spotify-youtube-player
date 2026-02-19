@@ -1,26 +1,32 @@
-import type { Metadata } from 'next';
-import './globals.css';
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import Sidebar from '@/components/Sidebar'
+import PlayerBar from '@/components/PlayerBar'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Spotify YouTube Player',
-  description: 'Hybrid music player using Spotify metadata and YouTube streaming',
-  manifest: '/manifest.json',
-  themeColor: '#1DB954',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
-};
+  description: 'Hybrid music player - Spotify metadata + YouTube streaming',
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={`${inter.className} bg-spotify-black text-white`}>
+        <div className="flex h-screen overflow-hidden">
+          <Sidebar />
+          <main className="flex-1 overflow-y-auto pb-24">
+            {children}
+          </main>
+        </div>
+        <PlayerBar />
+      </body>
     </html>
-  );
+  )
 }
