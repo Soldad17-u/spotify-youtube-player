@@ -1,42 +1,40 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { debounce } from '@/lib/utils';
+import { useState, FormEvent } from 'react'
 
 interface SearchBarProps {
-  onSearch: (query: string) => void;
-  placeholder?: string;
+  onSearch: (query: string) => void
 }
 
-export default function SearchBar({ onSearch, placeholder = 'Search for songs...' }: SearchBarProps) {
-  const [query, setQuery] = useState('');
+const SearchBar = ({ onSearch }: SearchBarProps) => {
+  const [query, setQuery] = useState('')
 
-  const debouncedSearch = debounce((q: string) => {
-    if (q.trim().length > 0) {
-      onSearch(q);
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    if (query.trim()) {
+      onSearch(query)
     }
-  }, 500);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setQuery(value);
-    debouncedSearch(value);
-  };
+  }
 
   return (
-    <div className="relative">
-      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <svg className="w-5 h-5 text-spotify-text-gray" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-        </svg>
+    <form onSubmit={handleSubmit} className="w-full max-w-2xl">
+      <div className="relative">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search for songs, artists, or albums..."
+          className="w-full px-6 py-4 bg-spotify-gray text-white rounded-full focus:outline-none focus:ring-2 focus:ring-spotify-green placeholder-spotify-lightgray"
+        />
+        <button
+          type="submit"
+          className="absolute right-2 top-1/2 -translate-y-1/2 bg-spotify-green hover:bg-spotify-green/80 text-white px-6 py-2 rounded-full font-medium transition-colors"
+        >
+          Search
+        </button>
       </div>
-      <input
-        type="text"
-        value={query}
-        onChange={handleChange}
-        placeholder={placeholder}
-        className="w-full pl-12 pr-4 py-3 bg-white text-black rounded-full focus:outline-none focus:ring-2 focus:ring-spotify-green"
-      />
-    </div>
-  );
+    </form>
+  )
 }
+
+export default SearchBar
