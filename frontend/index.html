@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify YouTube Player</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Custom Title Bar -->
+    <div class="title-bar">
+        <div class="title-bar-drag-region">
+            <span class="app-title">🎵 Spotify YouTube Player</span>
+        </div>
+        <div class="window-controls">
+            <button class="window-btn" onclick="window.close()">✕</button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Biblioteca</h3>
+                <button class="sidebar-item active" data-view="search">
+                    <span>🔍</span> Buscar
+                </button>
+                <button class="sidebar-item" data-view="playlists">
+                    <span>📚</span> Playlists
+                </button>
+                <button class="sidebar-item" data-view="queue">
+                    <span>📋</span> Fila
+                </button>
+            </div>
+
+            <div class="sidebar-section playlists-list" id="playlistsList">
+                <h3>Suas Playlists</h3>
+                <div class="loading">Carregando...</div>
+            </div>
+
+            <div class="sidebar-section cache-stats">
+                <h3>Cache</h3>
+                <div id="cacheStats" class="cache-info">
+                    <div>Músicas: <span id="cacheCount">0</span></div>
+                    <div>Tamanho: <span id="cacheSize">0 MB</span></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Search View -->
+            <div id="searchView" class="view active">
+                <div class="search-header">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Buscar músicas, artistas, álbuns..." 
+                        class="search-input"
+                    />
+                    <button id="searchBtn" class="btn-primary">Buscar</button>
+                </div>
+
+                <div id="searchResults" class="results-grid">
+                    <div class="welcome-message">
+                        <h2>🎵 Bem-vindo ao Spotify YouTube Player</h2>
+                        <p>Busque por músicas, artistas ou álbuns para começar</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Playlists View -->
+            <div id="playlistsView" class="view">
+                <h2>Suas Playlists do Spotify</h2>
+                <div id="playlistsContent" class="playlists-grid">
+                    <div class="loading">Carregando playlists...</div>
+                </div>
+            </div>
+
+            <!-- Queue View -->
+            <div id="queueView" class="view">
+                <h2>Fila de Reprodução</h2>
+                <div id="queueContent" class="queue-list">
+                    <div class="empty-state">Nenhuma música na fila</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Player Bar (Fixed Bottom) -->
+    <div class="player-bar">
+        <div class="player-track-info">
+            <img id="playerAlbumArt" src="" alt="" class="player-album-art" />
+            <div class="player-text">
+                <div id="playerTrackName" class="player-track-name">Nenhuma música tocando</div>
+                <div id="playerArtistName" class="player-artist-name">-</div>
+            </div>
+        </div>
+
+        <div class="player-controls">
+            <button id="prevBtn" class="control-btn">⏮</button>
+            <button id="playPauseBtn" class="control-btn control-btn-main">▶️</button>
+            <button id="nextBtn" class="control-btn">⏭</button>
+        </div>
+
+        <div class="player-volume">
+            <span>🔊</span>
+            <input 
+                type="range" 
+                id="volumeSlider" 
+                min="0" 
+                max="100" 
+                value="70" 
+                class="volume-slider"
+            />
+            <span id="volumeValue">70%</span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

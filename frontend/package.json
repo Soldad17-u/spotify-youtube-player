@@ -1,0 +1,20 @@
+{
+  "name": "spotify-youtube-player-frontend",
+  "version": "1.0.0",
+  "description": "Frontend Electron para Spotify YouTube Player",
+  "main": "electron.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev"
+  },
+  "keywords": ["spotify", "youtube", "music", "player"],
+  "author": "Daniel Calixto",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^28.0.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^24.9.0"
+  }
+}
