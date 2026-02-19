@@ -1,166 +1,122 @@
-import axios from 'axios'
-import type { Track, Playlist, QueueItem } from '@/types'
+// API client for web app
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
-const api = axios.create({
-  baseURL: API_URL,
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
+export interface Track {
+  id: string;
+  name: string;
+  artist: string;
+  album: string;
+  album_art: string;
+  duration: number;
+}
+
+export interface PlayerStatus {
+  is_playing: boolean;
+  current_track: Track | null;
+  position: number;
+  duration: number;
+  volume: number;
+  shuffle: boolean;
+  repeat: string;
+  has_previous: boolean;
+}
+
+export const api = {
+  // Search
+  async search(query: string, limit = 20) {
+    const res = await fetch(`${API_URL}/search?q=${encodeURIComponent(query)}&limit=${limit}`);
+    return res.json();
   },
-})
 
-// Search
-export const searchTracks = async (query: string): Promise<Track[]> => {
-  const response = await api.get('/search', { params: { q: query, limit: 20 } })
-  return response.data.tracks
-}
+  // Playback
+  async play(trackId: string) {
+    const res = await fetch(`${API_URL}/play/${trackId}`, { method: 'POST' });
+    return res.json();
+  },
 
-// Playback
-export const playTrack = async (trackId: string) => {
-  const response = await api.post(`/play/${trackId}`)
-  return response.data
-}
+  async pause() {
+    const res = await fetch(`${API_URL}/pause`, { method: 'POST' });
+    return res.json();
+  },
 
-export const pausePlayback = async () => {
-  const response = await api.post('/pause')
-  return response.data
-}
+  async resume() {
+    const res = await fetch(`${API_URL}/resume`, { method: 'POST' });
+    return res.json();
+  },
 
-export const resumePlayback = async () => {
-  const response = await api.post('/resume')
-  return response.data
-}
+  async previous() {
+    const res = await fetch(`${API_URL}/previous`, { method: 'POST' });
+    return res.json();
+  },
 
-export const playNext = async () => {
-  const response = await api.post('/next')
-  return response.data
-}
+  async next() {
+    const res = await fetch(`${API_URL}/next`, { method: 'POST' });
+    return res.json();
+  },
 
-export const seekTo = async (position: number) => {
-  const response = await api.post(`/seek/${position}`)
-  return response.data
-}
+  async seek(position: number) {
+    const res = await fetch(`${API_URL}/seek/${position}`, { method: 'POST' });
+    return res.json();
+  },
 
-// Queue
-export const addToQueue = async (trackId: string) => {
-  const response = await api.post(`/queue/add/${trackId}`)
-  return response.data
-}
+  // Status
+  async getStatus(): Promise<PlayerStatus> {
+    const res = await fetch(`${API_URL}/status`);
+    return res.json();
+  },
 
-export const getQueue = async (): Promise<QueueItem[]> => {
-  const response = await api.get('/queue')
-  return response.data.queue
-}
+  async getPosition() {
+    const res = await fetch(`${API_URL}/position`);
+    return res.json();
+  },
 
-export const clearQueue = async () => {
-  const response = await api.post('/queue/clear')
-  return response.data
-}
+  // Volume
+  async setVolume(level: number) {
+    const res = await fetch(`${API_URL}/volume/${level}`, { method: 'POST' });
+    return res.json();
+  },
 
-// Status
-export const getStatus = async () => {
-  const response = await api.get('/status')
-  return response.data
-}
+  // Queue
+  async addToQueue(trackId: string) {
+    const res = await fetch(`${API_URL}/queue/add/${trackId}`, { method: 'POST' });
+    return res.json();
+  },
 
-export const getPosition = async () => {
-  const response = await api.get('/position')
-  return response.data
-}
+  async getQueue() {
+    const res = await fetch(`${API_URL}/queue`);
+    return res.json();
+  },
 
-// Volume
-export const setVolume = async (level: number) => {
-  const response = await api.post(`/volume/${level}`)
-  return response.data
-}
+  async clearQueue() {
+    const res = await fetch(`${API_URL}/queue/clear`, { method: 'POST' });
+    return res.json();
+  },
 
-export const getVolume = async () => {
-  const response = await api.get('/volume')
-  return response.data
-}
+  // Shuffle/Repeat
+  async toggleShuffle() {
+    const res = await fetch(`${API_URL}/shuffle/toggle`, { method: 'POST' });
+    return res.json();
+  },
 
-// Shuffle & Repeat
-export const toggleShuffle = async () => {
-  const response = await api.post('/shuffle/toggle')
-  return response.data
-}
+  async cycleRepeat() {
+    const res = await fetch(`${API_URL}/repeat/cycle`, { method: 'POST' });
+    return res.json();
+  },
 
-export const cycleRepeat = async () => {
-  const response = await api.post('/repeat/cycle')
-  return response.data
-}
+  // Favorites
+  async getFavorites() {
+    const res = await fetch(`${API_URL}/favorites`);
+    return res.json();
+  },
 
-// Playlists
-export const getPlaylists = async (): Promise<Playlist[]> => {
-  const response = await api.get('/playlists')
-  return response.data.playlists
-}
+  async addFavorite(trackId: string) {
+    const res = await fetch(`${API_URL}/favorites/${trackId}`, { method: 'POST' });
+    return res.json();
+  },
 
-export const getPlaylistTracks = async (playlistId: string): Promise<Track[]> => {
-  const response = await api.get(`/playlist/${playlistId}`)
-  return response.data.tracks
-}
-
-// Equalizer
-export const getEqualizer = async () => {
-  const response = await api.get('/equalizer')
-  return response.data
-}
-
-export const setEqualizerBand = async (band: string, value: number) => {
-  const response = await api.post(`/equalizer/band/${band}/${value}`)
-  return response.data
-}
-
-export const loadEqualizerPreset = async (preset: string) => {
-  const response = await api.post(`/equalizer/preset/${preset}`)
-  return response.data
-}
-
-// Favorites
-export const getFavorites = async () => {
-  const response = await api.get('/favorites')
-  return response.data.favorites
-}
-
-export const addFavorite = async (trackId: string) => {
-  const response = await api.post(`/favorites/${trackId}`)
-  return response.data
-}
-
-export const removeFavorite = async (trackId: string) => {
-  const response = await api.delete(`/favorites/${trackId}`)
-  return response.data
-}
-
-export const checkFavorite = async (trackId: string) => {
-  const response = await api.get(`/favorites/check/${trackId}`)
-  return response.data.is_favorite
-}
-
-// History
-export const getRecentTracks = async () => {
-  const response = await api.get('/history/recent')
-  return response.data.tracks
-}
-
-export const getMostPlayed = async () => {
-  const response = await api.get('/history/most-played')
-  return response.data.tracks
-}
-
-// Statistics
-export const getStatistics = async () => {
-  const response = await api.get('/statistics')
-  return response.data
-}
-
-// Lyrics
-export const getLyrics = async (trackId: string) => {
-  const response = await api.get(`/lyrics/${trackId}`)
-  return response.data
-}
-
-export default api
+  async removeFavorite(trackId: string) {
+    const res = await fetch(`${API_URL}/favorites/${trackId}`, { method: 'DELETE' });
+    return res.json();
+  },
+};
