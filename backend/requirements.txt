@@ -1,7 +1,9 @@
-fastapi
-uvicorn
-spotipy
-python-vlc
-yt-dlp
-python-dotenv
-requests
+fastapi==0.104.1
+uvicorn==0.24.0
+spotipy==2.23.0
+yt-dlp==2023.11.16
+python-vlc==3.0.18121
+python-dotenv==1.0.0
+requests==2.31.0
+lyricsgenius==3.0.1
+numpy==1.24.3
