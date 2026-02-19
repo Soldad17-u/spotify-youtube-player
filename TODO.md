@@ -2,13 +2,15 @@
 
 ---
 
-## ✅ WHAT'S DONE (v1.0.0 - ALL 6 SPRINTS COMPLETE)
+## ✅ WHAT'S DONE (v1.0.1)
 
 ### Sprint 1: Backend Core ✅
 - [x] FastAPI server
 - [x] Spotify API integration  
 - [x] YouTube matching & streaming
 - [x] Basic playback (play/pause/stop)
+- [x] **Previous track button** ⭐ NEW!
+- [x] Next track
 - [x] Queue system
 - [x] Volume control
 - [x] Audio caching (SQLite)
@@ -18,7 +20,7 @@
 - [x] Electron framework
 - [x] React UI
 - [x] Search interface
-- [x] Player controls
+- [x] Player controls (play/pause/prev/next)
 - [x] Queue display
 - [x] Global hotkeys
 - [x] System tray
@@ -31,6 +33,7 @@
 - [x] Favorites system
 - [x] Play count statistics
 - [x] SQLite user database
+- [x] Track history for previous button
 
 ### Sprint 4: Advanced Frontend ✅
 - [x] Equalizer UI controls
@@ -57,7 +60,12 @@
 - [x] CONTRIBUTING.md
 - [x] INSTALL.md
 
-**Total: 48 features completed** ✅
+### Post-Launch Updates ✅
+- [x] Previous track button (all platforms)
+- [x] Track history system
+- [x] has_previous status flag
+
+**Total: 51 features completed** ✅
 
 ---
 
@@ -66,7 +74,6 @@
 ### Critical Missing Features
 
 **Desktop:**
-- [ ] Previous track button (currently only next)
 - [ ] Auto-updater
 - [ ] Remember window position/size
 
@@ -87,7 +94,6 @@
 - [ ] WebSocket for real-time sync
 - [ ] Better error handling
 - [ ] API rate limiting
-- [ ] Previous track endpoint
 
 ### Nice to Have
 
@@ -161,8 +167,8 @@
 ## 🎯 WHAT TO DO NEXT (Priority Order)
 
 ### Phase 1: Complete the UI (Highest Priority)
-1. **Previous track button** (all platforms)
-2. **Web: Add EQ page** (backend ready, just needs UI)
+1. ~~Previous track button (all platforms)~~ ✅ **DONE!**
+2. **Web: Add EQ page** (backend ready, just needs UI) ⭐ NEXT
 3. **Web: Add History page** (backend ready, just needs UI)
 4. **Web: Add Statistics page** (backend ready, just needs UI)
 5. **Mobile: Implement Playlists screen** (currently empty)
@@ -187,21 +193,26 @@
 
 ## 📊 CURRENT STATUS
 
-**Version:** 1.0.0  
+**Version:** 1.0.1 (Previous Track Update)  
 **Status:** ✅ Production Ready  
 **Released:** February 19, 2026
 
 **What Works:**
 - ✅ All 4 platforms (Backend/Desktop/Web/Mobile)
-- ✅ 50+ features
+- ✅ 51 features (added previous track!)
+- ✅ Full playback controls (prev/play/pause/next)
 - ✅ Full documentation
 - ✅ Deploy ready
 
 **What's Missing:**
 - ❌ Some UI pages (web/mobile)
 - ❌ Tests (0% coverage)
-- ❌ Previous track button
 - ❌ Real-time sync
+
+**Latest Update:**
+- ✅ Previous track button working on all platforms!
+- ✅ Track history system implemented
+- ✅ Smart restart (< 3sec = previous, >3sec = restart current)
 
 **Reality Check:**
 - Project is **functional and production-ready**
@@ -212,16 +223,20 @@
 
 ## 🚀 ROADMAP
 
-### v1.0.0 (Current) ✅
+### v1.0.0 ✅
 **Released: February 19, 2026**
 - All 6 sprints complete
 - 4 platforms working
 - Production ready
 
+### v1.0.1 (Current) ✅
+**Released: February 19, 2026**
+- Previous track button
+- Track history system
+
 ### v1.1.0 (Next)
 **Target: Q2 2026**
-- Previous track button
-- Web UI completion (EQ/History/Stats)
+- Web UI completion (EQ/History/Stats pages)
 - Mobile Playlists screen
 - Basic tests
 
@@ -244,7 +259,7 @@
 **Done is better than perfect.**
 
 This TODO is honest:
-- ✅ Shows what's complete (a lot!)
+- ✅ Shows what's complete (51 features!)
 - ❌ Shows what's missing (some UI pages, tests)
 - 🎯 Prioritizes what matters most
 
@@ -266,4 +281,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 ---
 
 **Last Updated:** February 19, 2026  
-**Next Review:** April 2026
+**Next Quick Win:** Web Equalizer Page
