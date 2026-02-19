@@ -12,13 +12,14 @@ from audio_player import AudioPlayer
 from lyrics_fetcher import LyricsFetcher
 from equalizer import Equalizer
 from user_data import UserData
+from playlist_manager import PlaylistManager
 
 load_dotenv()
 
 app = FastAPI(
     title="Spotify YouTube Player API",
     description="Hybrid music player using Spotify metadata + YouTube streaming",
-    version="3.0.0"
+    version="3.1.0"
 )
 
 # CORS para permitir frontend Electron
@@ -44,6 +45,7 @@ player = AudioPlayer()
 lyrics_fetcher = LyricsFetcher()
 equalizer = Equalizer()
 user_data = UserData()
+playlist_manager = PlaylistManager(matcher, cache, max_workers=3)
 
 # Connect user_data to player for auto-tracking
 player.user_data = user_data
@@ -56,7 +58,7 @@ async def root():
     return {
         "message": "Spotify YouTube Player API",
         "status": "running",
-        "version": "3.0.0",
+        "version": "3.1.0",
         "features": [
             "Auto-play next track",
             "Shuffle and repeat modes",
@@ -66,7 +68,8 @@ async def root():
             "3-band Equalizer",
             "History tracking",
             "Favorites system",
-            "Statistics"
+            "Statistics",
+            "Batch playlist download"
         ]
     }
 
@@ -450,6 +453,135 @@ async def get_playlist_tracks(playlist_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ========== BATCH PLAYLIST DOWNLOAD (SPRINT 5) ==========
+
+@app.post("/playlist/download/{playlist_id}")
+async def download_playlist(playlist_id: str):
+    """
+    Inicia download em batch de uma playlist completa
+    
+    Args:
+        playlist_id: ID da playlist no Spotify
+    
+    Returns:
+        Status do download iniciado
+    """
+    try:
+        # Buscar dados da playlist
+        playlist = sp.playlist(playlist_id)
+        playlist_name = playlist['name']
+        
+        # Buscar todas as tracks
+        results = sp.playlist_tracks(playlist_id)
+        tracks = []
+        
+        for item in results['items']:
+            if item['track']:
+                track = item['track']
+                tracks.append({
+                    'id': track['id'],
+                    'name': track['name'],
+                    'artists': track['artists'],
+                    'duration_ms': track['duration_ms']
+                })
+        
+        if not tracks:
+            raise HTTPException(status_code=400, detail="Playlist is empty")
+        
+        # Iniciar download
+        status = playlist_manager.download_playlist(
+            playlist_id,
+            playlist_name,
+            tracks
+        )
+        
+        if status == "already_downloading":
+            return {
+                "status": "already_downloading",
+                "message": "This playlist is already being downloaded",
+                "playlist_id": playlist_id
+            }
+        
+        return {
+            "status": "started",
+            "message": f"Started downloading {len(tracks)} tracks",
+            "playlist_id": playlist_id,
+            "playlist_name": playlist_name,
+            "total_tracks": len(tracks)
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/playlist/download/progress/{playlist_id}")
+async def get_playlist_download_progress(playlist_id: str):
+    """
+    Retorna progresso de download de playlist
+    
+    Args:
+        playlist_id: ID da playlist
+    
+    Returns:
+        Dict com progresso, status, completed, total, failed
+    """
+    progress = playlist_manager.get_progress(playlist_id)
+    
+    if not progress:
+        raise HTTPException(status_code=404, detail="No active download for this playlist")
+    
+    return progress
+
+@app.delete("/playlist/download/{playlist_id}")
+async def cancel_playlist_download(playlist_id: str):
+    """
+    Cancela download de playlist em andamento
+    
+    Args:
+        playlist_id: ID da playlist
+    
+    Returns:
+        Status do cancelamento
+    """
+    success = playlist_manager.cancel_download(playlist_id)
+    
+    if success:
+        return {
+            "status": "cancelled",
+            "message": "Download cancelled",
+            "playlist_id": playlist_id
+        }
+    else:
+        raise HTTPException(status_code=404, detail="No active download to cancel")
+
+@app.get("/playlists/cached")
+async def get_cached_playlists():
+    """
+    Lista todas as playlists que foram baixadas (completas ou parcialmente)
+    
+    Returns:
+        Lista de playlists com status e progresso
+    """
+    playlists = playlist_manager.get_cached_playlists()
+    return {"playlists": playlists, "count": len(playlists)}
+
+@app.get("/playlist/cached/{playlist_id}/tracks")
+async def get_cached_playlist_tracks(playlist_id: str):
+    """
+    Retorna tracks de uma playlist cacheada com status individual
+    
+    Args:
+        playlist_id: ID da playlist
+    
+    Returns:
+        Lista de tracks com status de cache (cached, failed, pending)
+    """
+    tracks = playlist_manager.get_playlist_tracks(playlist_id)
+    
+    if not tracks:
+        raise HTTPException(status_code=404, detail="Playlist not found in cache")
+    
+    return {"tracks": tracks, "count": len(tracks)}
+
 # ========== CACHE INFO ==========
 
 @app.get("/cache/stats")
@@ -462,8 +594,8 @@ async def get_cache_stats():
 
 if __name__ == "__main__":
     import uvicorn
-    print("🎵 Starting Spotify YouTube Player API v3.0...")
+    print("🎵 Starting Spotify YouTube Player API v3.1...")
     print("🔗 Server: http://localhost:8000")
     print("📚 Docs: http://localhost:8000/docs")
-    print("✨ NEW: Equalizer, History, Favorites, Statistics")
+    print("✨ NEW: Batch Playlist Download (Sprint 5)")
     uvicorn.run(app, host="0.0.0.0", port=8000)
