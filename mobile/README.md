@@ -1,102 +1,70 @@
 # Spotify YouTube Mobile App
 
-## 📱 Native mobile player for Android & iOS
+## 📱 Native mobile app for iOS and Android
 
-## 🚀 Quick Start
+### Features
+- 🔍 Search tracks
+- ▶️ Play music
+- 📋 Queue management
+- ❤️ Favorites
+- 🕐 History
+- 📊 Statistics
+- 🔔 Push notifications
+- 💾 Offline mode
+- 🎨 Native UI
 
-### Prerequisites
+### Tech Stack
+- React Native
+- Expo
+- TypeScript
+- React Navigation
+- Axios
 
-- Node.js >= 18
-- React Native CLI
-- Android Studio (for Android)
-- Xcode (for iOS, macOS only)
-
-### Installation
+### Setup
 
 ```bash
 cd mobile
 npm install
-```
 
-### Android
+# Start Expo
+npm start
 
-```bash
+# Run on Android
 npm run android
-```
 
-### iOS (macOS only)
-
-```bash
-cd ios
-pod install
-cd ..
+# Run on iOS (Mac only)
 npm run ios
 ```
 
-## ✨ Features
-
-- **Native Performance** - Smooth 60 FPS
-- **Touch Optimized** - Gesture controls
-- **Background Play** - Continue playing when locked
-- **Offline Mode** - Cached playlists
-- **Push Notifications** - Now playing updates
-
-## 🔧 Configuration
-
-Create `.env` file:
-
-```env
-API_URL=http://YOUR_SERVER_IP:8000
-```
-
-**Important:** Use your computer's LAN IP, not `localhost`!
+### Build
 
 ```bash
-# Find your IP:
-# Windows
-ipconfig
+# Install EAS CLI
+npm install -g eas-cli
 
-# macOS/Linux
-ifconfig
+# Login
+eas login
+
+# Configure
+eas build:configure
+
+# Build Android APK
+npm run build:android
+
+# Build iOS
+npm run build:ios
 ```
 
-## 🏛️ Architecture
+### Environment
 
+Create `.env`:
 ```
-mobile/
-├── src/
-│   ├── screens/       # App screens
-│   ├── components/    # Reusable components
-│   ├── navigation/    # React Navigation setup
-│   ├── api/           # API client
-│   ├── types/         # TypeScript types
-│   └── utils/         # Helper functions
-├── android/           # Android native code
-└── ios/               # iOS native code
+API_URL=http://your-backend-url:8000
 ```
 
-## 📦 Build
-
-### Android APK
-
-```bash
-cd android
-./gradlew assembleRelease
-```
-
-APK: `android/app/build/outputs/apk/release/app-release.apk`
-
-### iOS (macOS only)
-
-Open in Xcode and Archive.
-
-## 🔗 Backend
-
-Backend API must be accessible:
-
-```bash
-cd ../backend
-python main.py
-```
-
-Default: `http://localhost:8000`
+### Requirements
+- Node.js 18+
+- Expo CLI
+- Android Studio (for Android)
+- Xcode (for iOS, Mac only)
+- Backend running
