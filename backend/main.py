@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from music_matcher import MusicMatcher
 from audio_cache import AudioCache
 from audio_player import AudioPlayer
+from lyrics_fetcher import LyricsFetcher
 
 load_dotenv()
 
@@ -38,6 +39,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 matcher = MusicMatcher()
 cache = AudioCache()
 player = AudioPlayer()
+lyrics_fetcher = LyricsFetcher()
 
 class PlayRequest(BaseModel):
     track_id: str
@@ -53,7 +55,8 @@ async def root():
             "Shuffle and repeat modes",
             "Progress tracking",
             "Seek functionality",
-            "Queue management"
+            "Queue management",
+            "Lyrics fetching"
         ]
     }
 
@@ -252,6 +255,42 @@ async def get_volume():
     """
     return {"volume": player.get_volume()}
 
+# ========== LYRICS ==========
+
+@app.get("/lyrics/{track_id}")
+async def get_lyrics(track_id: str):
+    """
+    Busca letras de uma música
+    """
+    try:
+        # Buscar info da música
+        track = sp.track(track_id)
+        artist = track['artists'][0]['name']
+        title = track['name']
+        
+        # Buscar letras
+        lyrics = lyrics_fetcher.get_lyrics(artist, title)
+        
+        if lyrics:
+            formatted = lyrics_fetcher.format_lyrics_for_display(lyrics)
+            return {
+                "found": True,
+                "artist": artist,
+                "title": title,
+                "lyrics": lyrics,
+                "formatted": formatted
+            }
+        else:
+            return {
+                "found": False,
+                "artist": artist,
+                "title": title,
+                "message": "Lyrics not found"
+            }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ========== QUEUE MANAGEMENT ==========
 
 @app.post("/queue/add/{track_id}")
@@ -370,10 +409,10 @@ async def get_cache_stats():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-if __name__ == "__main__":
+if __name == "__main__":
     import uvicorn
     print("🎵 Starting Spotify YouTube Player API v2.0...")
     print("🔗 Server: http://localhost:8000")
     print("📚 Docs: http://localhost:8000/docs")
-    print("✨ New features: Auto-play, Shuffle, Repeat, Seek, Enhanced Queue")
+    print("✨ Features: Auto-play, Shuffle, Repeat, Seek, Lyrics, Queue")
     uvicorn.run(app, host="0.0.0.0", port=8000)
