@@ -1,290 +1,376 @@
 # 🎵 Spotify YouTube Player
 
-> Player de música híbrido completo que usa a API do Spotify para busca/metadados e YouTube para streaming de áudio - **sem anúncios**
+**The Ultimate Hybrid Music Player** - Combines Spotify's rich metadata with YouTube's free streaming.
 
+![Version](https://img.shields.io/badge/version-3.0.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Python](https://img.shields.io/badge/python-3.9+-blue)
-![Node](https://img.shields.io/badge/node-16+-green)
-![Status](https://img.shields.io/badge/status-production--ready-success)
+![Python](https://img.shields.io/badge/python-3.8+-yellow)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)
 
-## ✨ Características
+---
 
-### 🎶 Reprodução
-- **Sem anúncios** - reprodução direta do áudio do YouTube
-- **Cache inteligente** - primeira reprodução baixa, próximas instantâneas
-- **Controles completos** - play, pause, próxima, volume
-- **Fila de reprodução** - adicione músicas para tocar depois
+## ✨ Features (60+)
 
-### 🔍 Busca e Descoberta
-- **Interface moderna** - busca rápida usando dados do Spotify
-- **Playlists** - importa e reproduz suas playlists do Spotify
-- **Recomendações** - aproveita o catálogo rico do Spotify
-- **Matching avançado** - algoritmo inteligente Spotify → YouTube
+### 🎶 Core Playback
 
-### 💾 Performance
-- **SQLite cache** - armazenamento eficiente de músicas
-- **VLC engine** - reprodução de alta qualidade
-- **Async API** - backend não-bloqueante
-- **Electron app** - interface desktop nativa
+- ✅ **Auto-play next track** with monitoring thread
+- ✅ **Shuffle & Repeat** (off/one/all modes)
+- ✅ **Progress bar** with real-time tracking
+- ✅ **Seek/scrubbing** to any position
+- ✅ **Queue management** with metadata
+- ✅ **Volume control** (0-100)
+- ✅ **Play/Pause/Stop/Next** controls
 
-## 📸 Screenshots
+### 🎤 Music Discovery
 
-```
-[Em breve - adicione screenshots após rodar o app]
-```
+- ✅ **Search** Spotify's 80M+ tracks
+- ✅ **Browse playlists** from your library
+- ✅ **Lyrics fetching** from lyrics.ovh API
+- ✅ **Album art** display
+- ✅ **Metadata** (artist, album, duration)
 
-## 🛠️ Stack Tecnológico
+### 📈 Analytics & History
 
-### Backend
-- **Python 3.9+** - linguagem principal
-- **FastAPI** - framework web moderno e rápido
-- **Spotipy** - wrapper oficial da API do Spotify
-- **yt-dlp** - extração de áudio do YouTube (fork mantido do youtube-dl)
-- **python-vlc** - engine de reprodução de áudio
-- **SQLite** - banco de dados leve para cache
+- ✅ **Playback history** tracking
+- ✅ **Most played** tracks stats
+- ✅ **Listening statistics** (total time, plays, etc)
+- ✅ **Top artists** analysis
+- ✅ **Favorites system** (like/unlike tracks)
+- ✅ **Advanced analytics** (30-day insights)
 
-### Frontend
-- **Electron** - framework para apps desktop cross-platform
-- **HTML/CSS/JavaScript** - interface web moderna
-- **Axios** - cliente HTTP para comunicação com backend
+### 🎛️ Audio Control
 
-## 🚀 Instalação Rápida
+- ✅ **10-band equalizer** with presets
+- ✅ **EQ presets**: Flat, Pop, Rock, Jazz, Bass Boost, etc
+- ✅ **Custom EQ** settings per band
+- ✅ **Volume normalization** (optional)
 
-### Pré-requisitos
+### ⌨️ Hotkeys & Shortcuts
 
-Você precisa ter instalado:
+- ✅ **Media keys** support (Play/Pause, Next, Previous)
+- ✅ **Global hotkeys**:
+  - `Ctrl+Shift+Space` - Play/Pause
+  - `Ctrl+Shift+→` - Next track
+  - `Ctrl+Shift+←` - Previous track
+  - `Ctrl+Shift+L` - Toggle lyrics
+  - `Ctrl+Shift+M` - Mini mode
+  - `Ctrl+↑/↓` - Volume up/down
 
-1. **Python 3.9+** - [Download](https://www.python.org/downloads/)
-2. **Node.js 16+** - [Download](https://nodejs.org/)
-3. **VLC Media Player** - [Download](https://www.videolan.org/vlc/)
-4. **FFmpeg** - [Instruções](https://ffmpeg.org/download.html)
+### 🔔 Notifications
 
-> 📚 **Guia detalhado de instalação:** Veja [INSTALL.md](INSTALL.md) para instruções completas passo a passo
+- ✅ **Desktop notifications** on track change
+- ✅ **Album art** in notifications
+- ✅ **System tray** integration
+- ✅ **Tray tooltip** with current track
 
-### Setup Rápido
+### 🎨 User Interface
+
+- ✅ **Modern Electron UI**
+- ✅ **Dark/Light themes**
+- ✅ **Mini player mode** (compact)
+- ✅ **Lyrics panel** with auto-scroll
+- ✅ **History panel**
+- ✅ **Settings panel**
+- ✅ **Always on top** option
+
+### ⚙️ Settings & Preferences
+
+- ✅ **Audio quality** selection (low/medium/high)
+- ✅ **Theme** customization
+- ✅ **Cache management** (size limit, auto-cleanup)
+- ✅ **Notification** preferences
+- ✅ **Playback** defaults (shuffle, repeat, auto-play)
+- ✅ **Advanced options** (pre-loading, hardware acceleration)
+
+### 🚀 Performance
+
+- ✅ **Smart caching** with SQLite
+- ✅ **Background downloading** for queue
+- ✅ **Pre-loading** next track
+- ✅ **Cache statistics** and cleanup
+- ✅ **Optimized matching** algorithm
+
+### 📊 Backend API
+
+- ✅ **40+ REST endpoints**
+- ✅ **FastAPI** with auto-generated docs
+- ✅ **CORS enabled** for Electron frontend
+- ✅ **Swagger UI** at `/docs`
+- ✅ **Real-time status** endpoint
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+
+- Python 3.8+
+- Node.js 14+
+- VLC Media Player (for audio engine)
+- Spotify Developer Account
+
+### 1. Clone Repository
 
 ```bash
-# 1. Clone o repositório
 git clone https://github.com/Soldad17-u/spotify-youtube-player.git
 cd spotify-youtube-player
+```
 
-# 2. Backend setup
+### 2. Backend Setup
+
+```bash
 cd backend
 pip install -r requirements.txt
+```
 
-# 3. Configure credenciais do Spotify
-cp .env.example .env
-# Edite .env com suas credenciais do Spotify Developer Dashboard
+Create `.env` file:
 
-# 4. Frontend setup
-cd ../frontend
+```env
+SPOTIFY_CLIENT_ID=your_client_id
+SPOTIFY_CLIENT_SECRET=your_client_secret
+SPOTIFY_REDIRECT_URI=http://localhost:8888/callback
+```
+
+Get credentials at: https://developer.spotify.com/dashboard
+
+### 3. Frontend Setup
+
+```bash
+cd frontend
 npm install
 ```
 
-### Obter Credenciais do Spotify
+### 4. Run Application
 
-1. Acesse [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-2. Crie um novo app
-3. Adicione `http://localhost:8888/callback` nas Redirect URIs
-4. Copie Client ID e Client Secret para o arquivo `.env`
-
-## ▶️ Como Usar
-
-### Iniciar o Backend
+**Terminal 1 (Backend):**
 
 ```bash
 cd backend
 python main.py
 ```
 
-✅ Servidor rodando em: `http://localhost:8000`  
-📚 Documentação da API: `http://localhost:8000/docs`
-
-### Iniciar o Frontend
-
-Em outro terminal:
+**Terminal 2 (Frontend):**
 
 ```bash
 cd frontend
 npm start
 ```
 
-O aplicativo Electron abrirá automaticamente! 🎉
+Access at: `http://localhost:8000` (API) or Electron window
 
-### Usando o Player
+---
 
-1. **Buscar** - Digite nome da música, artista ou álbum
-2. **Reproduzir** - Clique no botão play na música desejada
-3. **Primeira vez** - Pode demorar 10-30 segundos (baixando e cacheando)
-4. **Próximas vezes** - Reprodução instantânea do cache local!
-5. **Playlists** - Acesse suas playlists do Spotify na barra lateral
-6. **Controles** - Use os botões na barra inferior (play/pause/next/volume)
+## 📚 API Documentation
 
-## 📁 Estrutura do Projeto
+### Playback Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/play/{track_id}` | Play a track |
+| POST | `/pause` | Pause playback |
+| POST | `/resume` | Resume playback |
+| POST | `/stop` | Stop playback |
+| POST | `/next` | Next track |
+| GET | `/position` | Get current position |
+| POST | `/seek/{position}` | Seek to position (seconds) |
+
+### Queue Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/queue/add/{track_id}` | Add to queue |
+| GET | `/queue` | Get queue |
+| POST | `/queue/clear` | Clear queue |
+
+### Mode Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/shuffle/toggle` | Toggle shuffle |
+| POST | `/repeat/cycle` | Cycle repeat modes |
+| POST | `/volume/{level}` | Set volume (0-100) |
+| GET | `/volume` | Get volume |
+
+### History & Favorites
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/history` | Get playback history |
+| GET | `/history/most-played` | Most played tracks |
+| DELETE | `/history` | Clear history |
+| POST | `/favorites/{track_id}` | Add favorite |
+| DELETE | `/favorites/{track_id}` | Remove favorite |
+| GET | `/favorites` | Get all favorites |
+
+### Analytics
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/analytics?days=30` | Get statistics |
+
+### Equalizer
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/equalizer/preset/{name}` | Apply EQ preset |
+| POST | `/equalizer/band/{index}` | Set band value |
+| GET | `/equalizer` | Get EQ status |
+
+### Settings
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/settings` | Get all settings |
+| PUT | `/settings/{category}/{key}` | Update setting |
+
+### Search & Metadata
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/search?q=query` | Search tracks |
+| GET | `/track/{track_id}` | Get track metadata |
+| GET | `/lyrics/{track_id}` | Get lyrics |
+| GET | `/playlists` | User playlists |
+| GET | `/playlist/{id}` | Playlist tracks |
+
+Full interactive docs: `http://localhost:8000/docs`
+
+---
+
+## 🎯 Architecture
 
 ```
 spotify-youtube-player/
-├── backend/                  # API Python
-│   ├── main.py              # Servidor FastAPI
-│   ├── music_matcher.py     # Algoritmo de matching
-│   ├── audio_cache.py       # Sistema de cache
-│   ├── audio_player.py      # Engine VLC
-│   ├── requirements.txt     # Dependências Python
-│   ├── .env.example         # Template de configuração
-│   └── .env                 # Suas credenciais (não commitar!)
-├── frontend/                # App Electron
-│   ├── electron.js          # Main process
-│   ├── index.html           # Interface
-│   ├── styles.css           # Estilos
-│   ├── app.js               # Lógica da aplicação
-│   └── package.json         # Dependências Node
-├── cache/                   # Músicas em cache (gerado automaticamente)
-├── README.md               # Este arquivo
-├── INSTALL.md              # Guia detalhado de instalação
-├── TODO.md                 # Roadmap e features futuras
-├── LICENSE                 # Licença MIT
-└── .gitignore              # Arquivos ignorados pelo Git
+├── backend/
+│   ├── main.py                 # FastAPI server (40+ endpoints)
+│   ├── audio_player.py         # VLC-based player engine
+│   ├── music_matcher.py        # Spotify → YouTube matching
+│   ├── audio_cache.py          # SQLite caching system
+│   ├── lyrics_fetcher.py       # Lyrics.ovh integration
+│   ├── history_manager.py      # History & favorites
+│   ├── equalizer.py            # 10-band EQ
+│   ├── settings_manager.py     # User preferences
+│   └── requirements.txt        # Python dependencies
+│
+├── frontend/
+│   ├── electron.js             # Electron main (hotkeys, tray)
+│   ├── index.html              # Main UI
+│   ├── app.js                  # Frontend logic
+│   ├── styles.css              # Modern styling
+│   └── package.json            # Node dependencies
+│
+├── cache/                      # Downloaded audio files
+├── config/                     # User settings
+├── TODO.md                     # Feature roadmap
+└── README.md                   # This file
 ```
 
-## 🔧 Desenvolvimento
+---
 
-### Rodar em Modo Desenvolvimento
+## 🛠️ Technologies
+
+### Backend
+
+- **FastAPI** - Modern Python web framework
+- **Spotipy** - Spotify API wrapper
+- **yt-dlp** - YouTube downloader
+- **python-vlc** - VLC bindings for audio
+- **SQLite** - Local database for cache/history
+
+### Frontend
+
+- **Electron** - Cross-platform desktop app
+- **HTML/CSS/JS** - Modern web technologies
+- **Native APIs** - Global hotkeys, notifications, tray
+
+---
+
+## 🐛 Troubleshooting
+
+### "VLC not found"
+
+Install VLC:
+- **Windows**: Download from videolan.org
+- **Linux**: `sudo apt install vlc`
+- **macOS**: `brew install vlc`
+
+### "Spotify authentication failed"
+
+1. Check `.env` credentials
+2. Verify redirect URI matches Spotify dashboard
+3. Delete `.cache` file and re-authenticate
+
+### "YouTube download failed"
+
+Update yt-dlp:
 
 ```bash
-# Backend com auto-reload
-cd backend
-uvicorn main:app --reload
-
-# Frontend com DevTools
-cd frontend
-npm run dev
+pip install --upgrade yt-dlp
 ```
 
-### Testar a API
+### "Slow matching"
 
-Acesse `http://localhost:8000/docs` para a interface Swagger interativa.
+First search may be slow (authenticating). Subsequent searches are cached.
 
-**Endpoints principais:**
+---
 
-```
-GET  /search?q={query}           # Buscar músicas
-POST /play/{track_id}            # Reproduzir música
-POST /pause                      # Pausar
-POST /resume                     # Retomar
-GET  /playlists                  # Listar playlists
-GET  /playlist/{id}              # Músicas de uma playlist
-POST /queue/add/{track_id}       # Adicionar à fila
-POST /queue/next                 # Próxima da fila
-GET  /queue                      # Ver fila
-POST /volume/{level}             # Ajustar volume (0-100)
-GET  /status                     # Status do player
-```
+## 📝 License
 
-## 🐛 Solução de Problemas
+MIT License - See LICENSE file
 
-### Backend não inicia
+---
 
-```bash
-# Reinstale dependências
-cd backend
-pip install -r requirements.txt --force-reinstall
+## 🚀 Roadmap
 
-# Verifique se porta 8000 está livre
-netstat -ano | findstr :8000  # Windows
-lsof -i :8000                 # Linux/macOS
-```
+See [TODO.md](TODO.md) for complete feature roadmap.
 
-### Erro: "VLC not found"
+**Completed**: 60+ features ✅
 
-- Certifique-se que VLC está instalado
-- Windows: Reinstale VLC 64-bit
-- Linux: `sudo apt install vlc python3-vlc`
-- macOS: `brew install vlc`
+**In Progress**:
+- Mobile app
+- Web player
+- AI recommendations
 
-### Música não toca
+---
 
-1. Verifique logs no terminal do backend
-2. Primeira reprodução demora (download)
-3. Se erro persistir, tente outra música
-4. Música pode não estar no YouTube
+## 🤝 Contributing
 
-### Frontend não conecta
+Contributions welcome!
 
-- Confirme que backend está rodando (`http://localhost:8000`)
-- Verifique firewall/antivírus
-- Reinicie ambos backend e frontend
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
-> 📚 Mais ajuda em [INSTALL.md](INSTALL.md)
+---
 
-## ⚠️ Aviso Legal
+## ⚠️ Legal Disclaimer
 
-**Este projeto é apenas para fins educacionais e uso pessoal.**
+This project is for **educational purposes only**.
 
-O uso da API do Spotify combinado com extração de áudio do YouTube pode violar os Termos de Serviço de ambas as plataformas. Este software é fornecido "como está", sem garantias. Use por sua própria conta e risco.
+- Uses Spotify API for metadata (requires account)
+- Downloads audio from YouTube (terms of service may vary)
+- **Not affiliated** with Spotify or YouTube
+- Users responsible for compliance with local laws
 
-### Alternativas Legítimas
+---
 
-Se você gosta de música, considere suportar artistas e plataformas:
+## 👨‍💻 Author
 
-- **[Spotify Premium](https://www.spotify.com/premium/)** - R$ 21,90/mês, sem anúncios
-- **[YouTube Music Premium](https://music.youtube.com/)** - R$ 28,90/mês
-- **[Deezer HiFi](https://www.deezer.com/)** - Alta qualidade
-- **[Apple Music](https://www.apple.com/apple-music/)** - Integrado ao ecossistema Apple
+**Daniel Calixto**
 
-## 📝 Roadmap
-
-Veja [TODO.md](TODO.md) para lista completa de features planejadas.
-
-### Próximas Features
-
-- [ ] Progress bar de reprodução
-- [ ] Shuffle e repeat
-- [ ] Letras sincronizadas
-- [ ] Equalizer
-- [ ] Hotkeys globais
-- [ ] Mini player mode
-- [ ] Histórico de reprodução
-- [ ] Sistema de favoritos
-- [ ] Temas customizados
-- [ ] App móvel
-
-## 🤝 Contribuir
-
-Contribuições são muito bem-vindas!
-
-1. Fork o projeto
-2. Crie uma branch (`git checkout -b feature/MinhaFeature`)
-3. Commit suas mudanças (`git commit -m 'Add: nova feature'`)
-4. Push para a branch (`git push origin feature/MinhaFeature`)
-5. Abra um Pull Request
-
-### Áreas que precisam de ajuda
-
-- Melhorar algoritmo de matching
-- Adicionar testes unitários
-- Otimizar performance do cache
-- Design de ícones e UI
-- Documentação e traduções
-
-## 📝 Licença
-
-MIT License - veja [LICENSE](LICENSE) para detalhes.
-
-Copyright (c) 2026 Daniel Calixto
-
-## 👨‍💻 Autor
-
-**Daniel Calixto**  
-GitHub: [@Soldad17-u](https://github.com/Soldad17-u)
+- GitHub: [@Soldad17-u](https://github.com/Soldad17-u)
+- Project: [spotify-youtube-player](https://github.com/Soldad17-u/spotify-youtube-player)
 
 ---
 
 ## ⭐ Star History
 
-Se este projeto foi útil, considere dar uma estrela! ⭐
+If you find this project useful, please consider giving it a star! ⭐
 
 ---
 
-**Desenvolvido com ❤️ para quem quer ouvir música sem interrupções**
+**Built with ❤️ by a music lover for music lovers**
 
-🎵 **Aproveite sua música!**
+Version 3.0.0 - Production Ready 🎉
