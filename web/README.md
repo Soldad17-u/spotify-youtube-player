@@ -1,69 +1,55 @@
 # Spotify YouTube Web Player
 
-## 🌐 Web-based music player
+## 🌐 Web version of the hybrid music player
 
-Responsive web interface for the Spotify YouTube hybrid player.
+### Features
+- 🔍 Search tracks from Spotify
+- ▶️ Play music via YouTube backend
+- 🎚️ Full player controls
+- 📋 Queue management
+- 🎵 Equalizer
+- ❤️ Favorites
+- 📊 History
+- 📱 Responsive design
+- 🌙 Dark theme
 
-## 🚀 Quick Start
+### Setup
 
 ```bash
-# Install dependencies
+cd web
 npm install
-
-# Start development server
 npm run dev
-
-# Build for production
-npm run build
-npm start
 ```
 
-## 📱 Features
+Open http://localhost:3000
 
-- **Responsive Design** - Works on desktop, tablet, mobile
-- **Progressive Web App** - Install as native app
-- **Real-time Updates** - Live playback status
-- **Touch Optimized** - Mobile-friendly controls
-- **Dark Theme** - Spotify-inspired design
-
-## 🔧 Configuration
+### Environment
 
 Create `.env.local`:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+API_URL=http://localhost:8000
 ```
 
-## 🌍 Deployment
+### Tech Stack
+- Next.js 14
+- React 18
+- Tailwind CSS
+- TypeScript
+- Axios
 
-### Vercel (Recommended)
+### Deploy
 
+**Vercel:**
 ```bash
-npm install -g vercel
-vercel
+vercel --prod
 ```
 
-### Docker
-
+**Netlify:**
 ```bash
-docker build -t sy-web-player .
-docker run -p 3000:3000 sy-web-player
+netlify deploy --prod
 ```
 
-## 📦 Tech Stack
-
-- **Next.js 14** - React framework
-- **TailwindCSS** - Styling
-- **Axios** - API client
-- **TypeScript** - Type safety
-
-## 🔗 API
-
-Backend API must be running:
-
-```bash
-cd ../backend
-python main.py
-```
-
-Default: `http://localhost:8000`
+### Requirements
+- Backend running on port 8000
+- Node.js 18+
+- npm or yarn
