@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify YouTube Player</title>
+    <title>Spotify YouTube Player v3.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Custom Title Bar -->
     <div class="title-bar">
         <div class="title-bar-drag-region">
-            <span class="app-title">🎵 Spotify YouTube Player v2.0</span>
+            <span class="app-title">🎵 Spotify YouTube Player v3.0</span>
         </div>
         <div class="window-controls">
-            <button class="window-btn minimize-btn" id="minimizeBtn">−</button>
-            <button class="window-btn maximize-btn" id="maximizeBtn">□</button>
-            <button class="window-btn close-btn" id="closeBtn">✕</button>
+            <button class="window-btn minimize-btn" id="minimizeBtn" title="Minimizar">−</button>
+            <button class="window-btn maximize-btn" id="maximizeBtn" title="Maximizar">□</button>
+            <button class="window-btn close-btn" id="closeBtn" title="Fechar">✕</button>
         </div>
     </div>
 
@@ -38,16 +38,34 @@
                 </button>
             </div>
 
+            <div class="sidebar-section">
+                <h3>Minha Música</h3>
+                <button class="sidebar-item" data-view="favorites">
+                    <span>❤️</span> Favoritos
+                </button>
+                <button class="sidebar-item" data-view="history">
+                    <span>🕒</span> Histórico
+                </button>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Configurações</h3>
+                <button class="sidebar-item" data-view="equalizer">
+                    <span>🎚️</span> Equalizer
+                </button>
+            </div>
+
             <div class="sidebar-section playlists-list" id="playlistsList">
                 <h3>Suas Playlists</h3>
                 <div class="loading">Carregando...</div>
             </div>
 
             <div class="sidebar-section cache-stats">
-                <h3>Cache</h3>
-                <div id="cacheStats" class="cache-info">
-                    <div>Músicas: <span id="cacheCount">0</span></div>
-                    <div>Tamanho: <span id="cacheSize">0 MB</span></div>
+                <h3>Estatísticas</h3>
+                <div id="statsInfo" class="cache-info">
+                    <div>Plays: <span id="totalPlays">-</span></div>
+                    <div>Horas: <span id="totalHours">-</span>h</div>
+                    <div>Favoritos: <span id="favCount">-</span></div>
                 </div>
             </div>
         </aside>
@@ -68,12 +86,17 @@
 
                 <div id="searchResults" class="results-grid">
                     <div class="welcome-message">
-                        <h2>🎵 Bem-vindo ao Spotify YouTube Player</h2>
-                        <p>Busque por músicas, artistas ou álbuns para começar</p>
+                        <h2>🎵 Bem-vindo ao Spotify YouTube Player v3.0</h2>
+                        <p>Seu player de música completo com Spotify + YouTube</p>
                         <div class="features-list">
                             <span class="feature-badge">✅ Auto-play</span>
                             <span class="feature-badge">✅ Shuffle & Repeat</span>
+                            <span class="feature-badge">✅ Progress Bar</span>
                             <span class="feature-badge">✅ Letras</span>
+                            <span class="feature-badge">✅ Hotkeys</span>
+                            <span class="feature-badge">✅ Equalizer</span>
+                            <span class="feature-badge">✅ Histórico</span>
+                            <span class="feature-badge">✅ Favoritos</span>
                             <span class="feature-badge">✅ Sem anúncios</span>
                         </div>
                     </div>
@@ -91,7 +114,7 @@
             <!-- Queue View -->
             <div id="queueView" class="view">
                 <div class="queue-header">
-                    <h2>Fila de Reprodução</h2>
+                    <h2>📋 Fila de Reprodução</h2>
                     <button id="clearQueueBtn" class="btn-secondary">Limpar Fila</button>
                 </div>
                 <div id="queueContent" class="queue-list">
@@ -109,6 +132,28 @@
                     <div class="empty-state">
                         <p>Reproduza uma música para ver as letras</p>
                     </div>
+                </div>
+            </div>
+
+            <!-- History View -->
+            <div id="historyView" class="view">
+                <h2>🕒 Histórico de Reprodução</h2>
+                <div id="historyContent">
+                    <div class="loading">Carregando histórico...</div>
+                </div>
+            </div>
+
+            <!-- Favorites View -->
+            <div id="favoritesView" class="view">
+                <div id="favoritesContent">
+                    <div class="loading">Carregando favoritos...</div>
+                </div>
+            </div>
+
+            <!-- Equalizer View -->
+            <div id="equalizerView" class="view">
+                <div id="equalizerContent">
+                    <div class="loading">Carregando equalizer...</div>
                 </div>
             </div>
         </main>
@@ -151,7 +196,7 @@
                 </button>
                 <button id="repeatBtn" class="control-btn" title="Repetir (desligado)">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M0 4.75A3.75 3.75 0 013.75 1h8.5A3.75 3.75 0 0116 4.75v5a3.75 3.75 0 01-3.75 3.75H9.81l1.018 1.018a.75.75 0 11-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 111.06 1.06L9.811 12h2.439a2.25 2.25 0 002.25-2.25v-5a2.25 2.25 0 00-2.25-2.25h-8.5a2.25 2.25 0 00-2.25 2.25v5A2.25 2.25 0 013.75 12H5v1.5H3.75A3.75 3.75 0 010 9.75v-5z"/>
+                        <path d="M0 4.75A3.75 3.75 0 013.75 1h8.5A3.75 3.75 0 0116 4.75v5a3.75 3.75 0 01-3.75 3.75H9.81l1.018 1.018a.75.75 0 11-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 111.06 1.06L9.811 12h2.439a2.25 2.25 0 002.25-2.25v-5a2.25 2.25 0 00-2.25-2.25h-8.5a2.25 2.25 0 00-2.25 2.25v5A2.25 2.25 0 003.75 12H5v1.5H3.75A3.75 3.75 0 010 9.75v-5z"/>
                     </svg>
                 </button>
             </div>
@@ -163,7 +208,7 @@
                     <div id="progressFill" class="progress-fill"></div>
                     <div id="progressHandle" class="progress-handle"></div>
                 </div>
-                <span id="totalTime" class="time-display">0:00</span>
+                <span id="totalTime" class="time-display" data-seconds="0">0:00</span>
             </div>
         </div>
 
@@ -189,6 +234,8 @@
     <!-- Toast Notifications Container -->
     <div id="toastContainer" class="toast-container"></div>
 
+    <!-- Scripts - Order matters! -->
+    <script src="window-controls.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
