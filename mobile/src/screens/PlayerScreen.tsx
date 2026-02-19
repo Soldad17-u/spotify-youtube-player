@@ -13,6 +13,7 @@ import {
   getPosition,
   pausePlayback,
   resumePlayback,
+  playPrevious,
   playNext,
   seekTo,
   toggleShuffle,
@@ -55,6 +56,14 @@ const PlayerScreen = () => {
       }
     } catch (err) {
       console.error('Toggle playback failed:', err);
+    }
+  };
+
+  const handlePrevious = async () => {
+    try {
+      await playPrevious();
+    } catch (err) {
+      console.error('Previous track failed:', err);
     }
   };
 
@@ -114,6 +123,7 @@ const PlayerScreen = () => {
   }
 
   const { current_track } = status;
+  const hasPrevious = status.has_previous || false;
 
   return (
     <View style={styles.container}>
@@ -148,13 +158,14 @@ const PlayerScreen = () => {
         <Text style={styles.timeText}>{formatTime(status.duration)}</Text>
       </View>
 
-      <View style={styles.controlsContainer}>
+      <View style={styles.mainControlsContainer}>
         <TouchableOpacity
-          onPress={handleShuffle}
-          style={styles.controlButton}
+          onPress={handlePrevious}
+          style={[styles.controlButton, !hasPrevious && styles.disabledButton]}
+          disabled={!hasPrevious}
         >
-          <Text style={status.shuffle ? styles.activeControl : styles.control}>
-            🔀
+          <Text style={[styles.control, !hasPrevious && styles.disabledControl]}>
+            ⏮️
           </Text>
         </TouchableOpacity>
 
@@ -170,8 +181,19 @@ const PlayerScreen = () => {
         <TouchableOpacity onPress={handleNext} style={styles.controlButton}>
           <Text style={styles.control}>⏭️</Text>
         </TouchableOpacity>
+      </View>
 
-        <TouchableOpacity onPress={handleRepeat} style={styles.controlButton}>
+      <View style={styles.secondaryControlsContainer}>
+        <TouchableOpacity
+          onPress={handleShuffle}
+          style={styles.smallControlButton}
+        >
+          <Text style={status.shuffle ? styles.activeControl : styles.control}>
+            🔀
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleRepeat} style={styles.smallControlButton}>
           <Text
             style={status.repeat !== 'off' ? styles.activeControl : styles.control}
           >
@@ -232,15 +254,28 @@ const styles = StyleSheet.create({
     fontSize: 12,
     width: 40,
   },
-  controlsContainer: {
+  mainControlsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 24,
+    marginBottom: 16,
+  },
+  secondaryControlsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 32,
   },
   controlButton: {
-    width: 48,
-    height: 48,
+    width: 56,
+    height: 56,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  smallControlButton: {
+    width: 44,
+    height: 44,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -253,12 +288,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   control: {
-    fontSize: 28,
+    fontSize: 32,
     color: '#B3B3B3',
   },
   activeControl: {
     fontSize: 28,
     color: '#1DB954',
+  },
+  disabledButton: {
+    opacity: 0.3,
+  },
+  disabledControl: {
+    color: '#3E3E3E',
   },
   playIcon: {
     fontSize: 32,
