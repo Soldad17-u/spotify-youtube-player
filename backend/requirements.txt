@@ -1,9 +1,7 @@
-fastapi==0.115.0
-uvicorn[standard]==0.32.0
-spotipy==2.24.0
-yt-dlp==2024.12.23
-python-vlc==3.0.21115
-python-dotenv==1.0.1
-aiofiles==24.1.0
-sqlite3
-pydantic==2.10.3
+fastapi
+uvicorn
+spotipy
+python-vlc
+yt-dlp
+python-dotenv
+requests

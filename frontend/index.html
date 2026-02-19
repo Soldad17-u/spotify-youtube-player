@@ -10,10 +10,12 @@
     <!-- Custom Title Bar -->
     <div class="title-bar">
         <div class="title-bar-drag-region">
-            <span class="app-title">🎵 Spotify YouTube Player</span>
+            <span class="app-title">🎵 Spotify YouTube Player v2.0</span>
         </div>
         <div class="window-controls">
-            <button class="window-btn" onclick="window.close()">✕</button>
+            <button class="window-btn minimize-btn" id="minimizeBtn">−</button>
+            <button class="window-btn maximize-btn" id="maximizeBtn">□</button>
+            <button class="window-btn close-btn" id="closeBtn">✕</button>
         </div>
     </div>
 
@@ -30,6 +32,9 @@
                 </button>
                 <button class="sidebar-item" data-view="queue">
                     <span>📋</span> Fila
+                </button>
+                <button class="sidebar-item" data-view="lyrics">
+                    <span>🎵</span> Letras
                 </button>
             </div>
 
@@ -65,6 +70,12 @@
                     <div class="welcome-message">
                         <h2>🎵 Bem-vindo ao Spotify YouTube Player</h2>
                         <p>Busque por músicas, artistas ou álbuns para começar</p>
+                        <div class="features-list">
+                            <span class="feature-badge">✅ Auto-play</span>
+                            <span class="feature-badge">✅ Shuffle & Repeat</span>
+                            <span class="feature-badge">✅ Letras</span>
+                            <span class="feature-badge">✅ Sem anúncios</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -79,9 +90,25 @@
 
             <!-- Queue View -->
             <div id="queueView" class="view">
-                <h2>Fila de Reprodução</h2>
+                <div class="queue-header">
+                    <h2>Fila de Reprodução</h2>
+                    <button id="clearQueueBtn" class="btn-secondary">Limpar Fila</button>
+                </div>
                 <div id="queueContent" class="queue-list">
                     <div class="empty-state">Nenhuma música na fila</div>
+                </div>
+            </div>
+
+            <!-- Lyrics View -->
+            <div id="lyricsView" class="view">
+                <div class="lyrics-header">
+                    <h2>🎵 Letras</h2>
+                    <button id="refreshLyricsBtn" class="btn-secondary">Atualizar</button>
+                </div>
+                <div id="lyricsContent" class="lyrics-container">
+                    <div class="empty-state">
+                        <p>Reproduza uma música para ver as letras</p>
+                    </div>
                 </div>
             </div>
         </main>
@@ -89,6 +116,7 @@
 
     <!-- Player Bar (Fixed Bottom) -->
     <div class="player-bar">
+        <!-- Track Info -->
         <div class="player-track-info">
             <img id="playerAlbumArt" src="" alt="" class="player-album-art" />
             <div class="player-text">
@@ -97,14 +125,55 @@
             </div>
         </div>
 
-        <div class="player-controls">
-            <button id="prevBtn" class="control-btn">⏮</button>
-            <button id="playPauseBtn" class="control-btn control-btn-main">▶️</button>
-            <button id="nextBtn" class="control-btn">⏭</button>
+        <!-- Playback Controls (Center) -->
+        <div class="player-controls-center">
+            <!-- Control Buttons -->
+            <div class="player-controls">
+                <button id="shuffleBtn" class="control-btn" title="Shuffle (desligado)">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M13.5 2.5L16 5l-2.5 2.5M16 5H9.5a4.5 4.5 0 00-4.5 4.5v0M2.5 13.5L0 11l2.5-2.5M0 11h6.5a4.5 4.5 0 004.5-4.5v0"/>
+                    </svg>
+                </button>
+                <button id="prevBtn" class="control-btn" title="Anterior">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M3.3 1a.7.7 0 01.7.7v12.6a.7.7 0 01-1.4 0V1.7a.7.7 0 01.7-.7zm10.4 1.43L7.05 7.93a.7.7 0 000 .13l6.65 5.5a.7.7 0 001.15-.55V2.98a.7.7 0 00-1.15-.55z"/>
+                    </svg>
+                </button>
+                <button id="playPauseBtn" class="control-btn control-btn-main" title="Reproduzir">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </button>
+                <button id="nextBtn" class="control-btn" title="Próxima">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M12.7 1a.7.7 0 00-.7.7v12.6a.7.7 0 001.4 0V1.7a.7.7 0 00-.7-.7zM2.3 2.43L8.95 7.93a.7.7 0 010 .13L2.3 13.56A.7.7 0 011.15 13V2.98a.7.7 0 011.15-.55z"/>
+                    </svg>
+                </button>
+                <button id="repeatBtn" class="control-btn" title="Repetir (desligado)">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M0 4.75A3.75 3.75 0 013.75 1h8.5A3.75 3.75 0 0116 4.75v5a3.75 3.75 0 01-3.75 3.75H9.81l1.018 1.018a.75.75 0 11-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 111.06 1.06L9.811 12h2.439a2.25 2.25 0 002.25-2.25v-5a2.25 2.25 0 00-2.25-2.25h-8.5a2.25 2.25 0 00-2.25 2.25v5A2.25 2.25 0 013.75 12H5v1.5H3.75A3.75 3.75 0 010 9.75v-5z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <span id="currentTime" class="time-display">0:00</span>
+                <div id="progressBar" class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                    <div id="progressHandle" class="progress-handle"></div>
+                </div>
+                <span id="totalTime" class="time-display">0:00</span>
+            </div>
         </div>
 
+        <!-- Volume (Right) -->
         <div class="player-volume">
-            <span>🔊</span>
+            <button id="muteBtn" class="control-btn" title="Volume">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M9.741.85a.75.75 0 01.375.65v13a.75.75 0 01-1.125.65L3.993 12H2.75A.75.75 0 012 11.25v-6.5A.75.75 0 012.75 4h1.243L9.366.85a.75.75 0 01.375-.65zM11.5 5.5a.75.75 0 011.06 0c1.17 1.17 1.17 3.07 0 4.24a.75.75 0 11-1.06-1.06.94.94 0 000-2.12.75.75 0 010-1.06z"/>
+                </svg>
+            </button>
             <input 
                 type="range" 
                 id="volumeSlider" 
@@ -113,9 +182,12 @@
                 value="70" 
                 class="volume-slider"
             />
-            <span id="volumeValue">70%</span>
+            <span id="volumeValue" class="volume-value">70%</span>
         </div>
     </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer" class="toast-container"></div>
 
     <script src="app.js"></script>
 </body>
