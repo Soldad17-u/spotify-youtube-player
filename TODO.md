@@ -2,130 +2,175 @@
 
 ## ✅ Concluído
 
+### Backend Core
 - [x] Backend FastAPI completo
 - [x] Sistema de matching Spotify → YouTube
 - [x] Cache inteligente com SQLite
 - [x] Player engine com VLC
-- [x] Frontend Electron com interface moderna
 - [x] Busca de músicas
 - [x] Reprodução com controles
 - [x] Sistema de playlists
 - [x] Controle de volume
 - [x] Fila de reprodução
 - [x] Documentação completa
-- [x] **Progress bar de reprodução** ⭐ SPRINT 1
-- [x] **Shuffle e repeat** ⭐ SPRINT 1
-- [x] **Auto-play próxima música** ⭐ SPRINT 1
-- [x] **Seek/scrubbing na timeline** ⭐ SPRINT 1
-- [x] **Letras sincronizadas** ⭐ SPRINT 1
 
-## 🔥 Em Desenvolvimento (Sprint 2)
+### Frontend Core
+- [x] Frontend Electron com interface moderna
+- [x] Custom title bar
+- [x] Sidebar navigation
+- [x] Search view
+- [x] Player bar
 
-- [ ] **Frontend para progress bar** - UI components
-- [ ] **Frontend para letras** - Lyrics panel
-- [ ] **Hotkeys globais** - Play/pause, next, prev com teclado
-- [ ] **Notificações** - mostrar música atual quando mudar
-- [ ] **Mini player mode** - modo compacto flutuante
+### Sprint 1 - Backend Advanced ✅
+- [x] **Progress bar de reprodução** - posição + porcentagem
+- [x] **Shuffle e repeat** - 3 modos (off/one/all)
+- [x] **Auto-play próxima música** - monitoring thread
+- [x] **Seek/scrubbing** - pular para qualquer posição
+- [x] **Letras sincronizadas** - lyrics.ovh API
+- [x] **Enhanced queue** - metadados completos
+
+### Sprint 2 - Frontend Integration ✅
+- [x] **Frontend para progress bar** - interactive draggable
+- [x] **Frontend para letras** - dedicated lyrics view
+- [x] **Hotkeys globais** - media keys + custom shortcuts
+- [x] **Notificações desktop** - native OS notifications
+- [x] **Toast notifications** - in-app animated messages
+- [x] **Mini player mode** - compact 400x180px window
+- [x] **Window controls** - IPC communication
+- [x] **Enhanced queue UI** - visual queue with actions
+
+### Sprint 3 - Advanced Backend ✅
+- [x] **Equalizer** - 3-band (bass, mid, treble)
+- [x] **Equalizer presets** - 9 built-in presets
+- [x] **History tracking** - SQLite database
+- [x] **Auto-tracking** - on playback end
+- [x] **Favorites system** - like/unlike tracks
+- [x] **Statistics** - listening stats dashboard
+- [x] **Play stats** - most played, recent tracks
+
+## 🔥 Em Desenvolvimento (Sprint 4)
+
+### Frontend for Advanced Features
+- [ ] **Equalizer UI** - sliders for bass/mid/treble
+- [ ] **Preset selector** - dropdown with 9 presets
+- [ ] **History view** - list of played tracks
+- [ ] **Recent tracks** - no duplicates view
+- [ ] **Most played** - top tracks list
+- [ ] **Favorites view** - grid of liked tracks
+- [ ] **Statistics widgets** - visual stats display
+- [ ] **Heart button** - like/unlike current track
 
 ## 📅 Próximas Features
 
 ### Alta Prioridade
 
-- [ ] **Equalizer** - controles de graves, médios, agudos
-- [ ] **Download de playlists completas** - pré-cache de playlist inteira
-- [ ] **Histórico de reprodução** - ver músicas tocadas recentemente
-- [ ] **Favoritos** - sistema de curtir músicas
+- [ ] **Download de playlists completas** - batch download with progress
+- [ ] **Temas customizados** - dark/light themes, accent colors
+- [ ] **Export/import** - backup favorites and settings
+- [ ] **Keyboard shortcuts settings** - customize hotkeys
 
 ### Média Prioridade
 
-- [ ] **Temas customizados** - dark/light themes, cores personalizadas
-- [ ] **Importar biblioteca local** - tocar MP3s locais também
-- [ ] **Crossfade** - transição suave entre músicas
-- [ ] **Normalização de volume** - ReplayGain
-- [ ] **Pre-loading** - carregar próxima música em background
+- [ ] **Importar biblioteca local** - play local MP3s
+- [ ] **Crossfade** - smooth transitions (3-10s)
+- [ ] **Normalização de volume** - ReplayGain support
+- [ ] **Pre-loading** - download next track in background
+- [ ] **Search filters** - by year, genre, explicit
+- [ ] **Lyrics sync** - highlight current line
 
 ### Baixa Prioridade
 
-- [ ] **Scrobbling Last.fm** - registrar músicas tocadas
-- [ ] **Compartilhamento social** - compartilhar música atual
-- [ ] **Visualizador de áudio** - spectrum analyzer animado
-- [ ] **Sleep timer** - desligar após X minutos
-- [ ] **Filtros de busca** - por ano, gênero, etc
-- [ ] **Exportar playlists** - salvar como M3U/PLS
+- [ ] **Scrobbling Last.fm** - track plays to Last.fm
+- [ ] **Compartilhamento social** - share current track
+- [ ] **Visualizador de áudio** - spectrum analyzer
+- [ ] **Sleep timer** - auto-stop after X minutes
+- [ ] **Exportar playlists** - save as M3U/PLS
+- [ ] **Discord Rich Presence** - show what you're playing
 
 ## 🔧 Melhorias Técnicas
 
 ### Performance
 
-- [x] **Monitoring thread** - background monitoring para auto-play ✅
-- [ ] **Streaming progressivo** - começar a tocar enquanto baixa
-- [ ] **Compressão de cache** - reduzir espaço em disco
-- [ ] **Limpeza automática de cache** - remover músicas antigas
-- [ ] **Multi-threading** - download paralelo de múltiplas músicas
+- [x] **Monitoring thread** - background auto-play ✅
+- [ ] **Streaming progressivo** - play while downloading
+- [ ] **Compressão de cache** - reduce disk usage
+- [ ] **Limpeza automática de cache** - remove old tracks (>30 days)
+- [ ] **Multi-threading** - parallel downloads
+- [ ] **Lazy loading** - virtualized lists for large playlists
 
 ### Qualidade
 
-- [ ] **Fallback sources** - tentar SoundCloud se YouTube falhar
-- [ ] **Matching aprimorado** - usar audio fingerprinting
-- [ ] **Detecção de qualidade** - escolher melhor bitrate disponível
-- [ ] **Validação de integridade** - verificar se download foi completo
+- [ ] **Fallback sources** - try SoundCloud if YouTube fails
+- [ ] **Matching aprimorado** - audio fingerprinting
+- [ ] **Detecção de qualidade** - select best bitrate
+- [ ] **Validação de integridade** - verify complete downloads
+- [ ] **Error recovery** - retry failed downloads
 
 ### Experiência do Usuário
 
-- [ ] **Onboarding** - tutorial na primeira vez
-- [ ] **Atalhos visuais** - dicas de teclado na interface
-- [x] **Estado persistente** - lembrar última música, volume, etc ✅ (queue history)
-- [ ] **Configurações avançadas** - pasta de cache, qualidade, etc
-- [ ] **Modo offline** - indicar quando sem internet
+- [ ] **Onboarding** - first-time tutorial
+- [ ] **Atalhos visuais** - keyboard hints in UI
+- [x] **Estado persistente** - queue, volume, EQ settings ✅
+- [ ] **Configurações avançadas** - cache folder, quality, API keys
+- [ ] **Modo offline** - indicate no internet
+- [ ] **Search history** - remember recent searches
 
 ## 🐛 Bugs Conhecidos
 
-- [ ] Player às vezes não retoma após pause
-- [ ] Volume slider não sincroniza em tempo real
-- [ ] Primeira busca pode ser lenta (autenticação Spotify)
-- [ ] Cache stats não atualizam automaticamente
-- [ ] Playlists muito grandes (>100 músicas) não carregam todas
+- [ ] Volume slider não sincroniza com VLC em tempo real
+- [ ] Primeira busca pode ser lenta (Spotify auth)
+- [ ] Cache stats não atualizam automaticamente na UI
+- [ ] Playlists muito grandes (>100 músicas) paginate incorrectly
+- [ ] Window restore position not working on some systems
 
 ## 🎨 Design
 
 - [ ] Animações de transição mais suaves
-- [ ] Loading states mais informativos
+- [ ] Loading states mais informativos (skeleton screens)
 - [ ] Feedback visual ao adicionar à fila
 - [ ] Indicador de música atual na lista
 - [ ] Drag and drop para reordenar fila
+- [ ] Context menus (right-click)
+- [ ] Album art zoom on hover
 
 ## 📱 Plataformas
 
-- [ ] **App móvel** - React Native ou Flutter
-- [ ] **Web player** - versão browser pura
-- [ ] **CLI** - interface de linha de comando
-- [ ] **API pública** - permitir integrações externas
+- [ ] **App móvel** - React Native version
+- [ ] **Web player** - browser-only version
+- [ ] **CLI** - command-line interface
+- [ ] **API pública** - allow third-party integrations
+- [ ] **Browser extension** - control from browser
 
 ## 🔐 Segurança & Legal
 
-- [ ] Rate limiting para evitar abuse
-- [ ] Criptografia de credenciais
-- [ ] Logs de auditoria
+- [ ] Rate limiting - prevent API abuse
+- [ ] Criptografia de credenciais - secure storage
+- [ ] Logs de auditoria - track important actions
 - [ ] Disclaimer legal mais claro
 - [ ] Opção de usar apenas fontes legítimas
+- [ ] GDPR compliance for user data
 
 ## 📊 Analytics
 
-- [ ] Estatísticas de uso (local)
-- [ ] Músicas mais tocadas
-- [ ] Tempo total de escuta
-- [ ] Artistas favoritos
-- [ ] Gráficos de escuta ao longo do tempo
+- [x] **Estatísticas de uso** - local tracking ✅
+- [x] **Músicas mais tocadas** - play count ✅
+- [x] **Tempo total de escuta** - listening hours ✅
+- [ ] **Artistas favoritos** - aggregate by artist
+- [ ] **Gráficos de escuta** - charts over time
+- [ ] **Genre breakdown** - listening habits by genre
+- [ ] **Weekly/monthly reports** - listening summaries
 
 ---
 
-## 💡 Ideias Malucas
+## 💡 Ideias Futuras
 
-- [ ] **AI DJ** - criar playlists automaticamente baseado em mood
-- [ ] **Integração com trading bot** - tocar música baseado em performance do bot 😄
-- [ ] **Modo party** - sincronizar reprodução entre múltiplos dispositivos
-- [ ] **Reconhecimento de voz** - comandos tipo "tocar rock dos anos 80"
-- [ ] **Integração com smart home** - controlar via Alexa/Google Home
+- [ ] **AI DJ** - auto-create playlists by mood
+- [ ] **Lyrics karaoke mode** - sing along with highlights
+- [ ] **Modo party** - sync playback across devices
+- [ ] **Reconhecimento de voz** - voice commands
+- [ ] **Integração com smart home** - Alexa/Google Home
+- [ ] **Collaborative playlists** - share with friends
+- [ ] **Music quiz game** - guess the song
 
 ---
 
@@ -140,35 +185,72 @@
 - Seek functionality
 - Lyrics fetching (lyrics.ovh API)
 - Enhanced queue management
-- Complete API documentation
 
-**Pull Request:** [#1](https://github.com/Soldad17-u/spotify-youtube-player/pull/1)
-
-### 🔄 Sprint 2 (In Progress)
-
-**Frontend Integration**
-- Progress bar UI component
-- Shuffle/repeat buttons
-- Lyrics panel
-- Hotkeys (media keys + custom)
-- Desktop notifications
-- Mini player mode
-
-**Target:** Feb 22, 2026
-
-### 📅 Sprint 3 (Planned)
-
-**Polish & Features**
-- Equalizer
-- Playlist batch download
-- History & favorites
-- Theme customization
-- Performance optimizations
-
-**Target:** Feb 26, 2026
+**Pull Request:** [#1](https://github.com/Soldad17-u/spotify-youtube-player/pull/1) ✅ Merged
 
 ---
 
-**Contribuições são bem-vindas!** Se quiser implementar alguma feature da lista, crie uma branch e abra um PR.
+### ✅ Sprint 2 (COMPLETO - Feb 19, 2026)
 
-**Current Progress:** 15/60+ features completed (25%)
+**Frontend Integration**
+- Interactive progress bar with seek
+- Shuffle/repeat UI buttons
+- Lyrics panel view
+- Global hotkeys (media keys + custom)
+- Desktop + toast notifications
+- Mini player mode (Ctrl+M)
+- Window controls with IPC
+- Enhanced queue UI
+
+**Pull Request:** [#2](https://github.com/Soldad17-u/spotify-youtube-player/pull/2) ✅ Merged
+
+---
+
+### ✅ Sprint 3 (COMPLETO - Feb 19, 2026)
+
+**Advanced Backend**
+- 3-band Equalizer (bass, mid, treble)
+- 9 EQ presets (flat, bass boost, vocal, etc)
+- History tracking (SQLite)
+- Auto-tracking on playback end
+- Favorites/like system
+- Listening statistics
+- Play stats (most played, recent)
+
+**Pull Request:** [#3](https://github.com/Soldad17-u/spotify-youtube-player/pull/3) ✅ Merged
+
+---
+
+### 🔄 Sprint 4 (In Progress - Feb 19, 2026)
+
+**Frontend for Advanced Features**
+- Equalizer UI with sliders
+- Preset selector dropdown
+- History view (recent, most played)
+- Favorites grid view
+- Statistics dashboard
+- Heart button for current track
+- Visual feedback for EQ changes
+- Batch actions for history/favorites
+
+**Target:** Feb 20, 2026
+
+---
+
+### 📅 Sprint 5 (Planned - Feb 21-23, 2026)
+
+**Polish & Performance**
+- Batch playlist download
+- Theme customization system
+- Export/import playlists
+- Cache management UI
+- Performance optimizations
+- Bug fixes
+
+**Target:** Feb 23, 2026
+
+---
+
+**Current Progress:** 25/60+ features completed (42%)
+
+**Contribuições são bem-vindas!** Se quiser implementar alguma feature da lista, crie uma branch e abra um PR.
