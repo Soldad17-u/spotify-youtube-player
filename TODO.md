@@ -13,34 +13,36 @@
 - [x] Controle de volume
 - [x] Fila de reprodução
 - [x] Documentação completa
+- [x] **Progress bar de reprodução** ⭐ SPRINT 1
+- [x] **Shuffle e repeat** ⭐ SPRINT 1
+- [x] **Auto-play próxima música** ⭐ SPRINT 1
+- [x] **Seek/scrubbing na timeline** ⭐ SPRINT 1
+- [x] **Letras sincronizadas** ⭐ SPRINT 1
 
-## 🚧 Em Desenvolvimento
+## 🔥 Em Desenvolvimento (Sprint 2)
 
-- [ ] Progress bar de reprodução
-- [ ] Shuffle e repeat
-- [ ] Botão de adicionar à fila
-- [ ] Seek/scrubbing na timeline
+- [ ] **Frontend para progress bar** - UI components
+- [ ] **Frontend para letras** - Lyrics panel
+- [ ] **Hotkeys globais** - Play/pause, next, prev com teclado
+- [ ] **Notificações** - mostrar música atual quando mudar
+- [ ] **Mini player mode** - modo compacto flutuante
 
 ## 📅 Próximas Features
 
 ### Alta Prioridade
 
-- [ ] **Auto-play próxima música** - quando acabar, tocar próxima da fila automaticamente
-- [ ] **Letras sincronizadas** - integração com API de letras
 - [ ] **Equalizer** - controles de graves, médios, agudos
-- [ ] **Hotkeys globais** - Play/pause, next, prev com teclado
-- [ ] **Notificações** - mostrar música atual quando mudar
-- [ ] **Mini player mode** - modo compacto flutuante
-
-### Média Prioridade
-
 - [ ] **Download de playlists completas** - pré-cache de playlist inteira
 - [ ] **Histórico de reprodução** - ver músicas tocadas recentemente
 - [ ] **Favoritos** - sistema de curtir músicas
+
+### Média Prioridade
+
 - [ ] **Temas customizados** - dark/light themes, cores personalizadas
 - [ ] **Importar biblioteca local** - tocar MP3s locais também
 - [ ] **Crossfade** - transição suave entre músicas
 - [ ] **Normalização de volume** - ReplayGain
+- [ ] **Pre-loading** - carregar próxima música em background
 
 ### Baixa Prioridade
 
@@ -55,7 +57,7 @@
 
 ### Performance
 
-- [ ] **Pre-loading** - carregar próxima música em background
+- [x] **Monitoring thread** - background monitoring para auto-play ✅
 - [ ] **Streaming progressivo** - começar a tocar enquanto baixa
 - [ ] **Compressão de cache** - reduzir espaço em disco
 - [ ] **Limpeza automática de cache** - remover músicas antigas
@@ -72,7 +74,7 @@
 
 - [ ] **Onboarding** - tutorial na primeira vez
 - [ ] **Atalhos visuais** - dicas de teclado na interface
-- [ ] **Estado persistente** - lembrar última música, volume, etc
+- [x] **Estado persistente** - lembrar última música, volume, etc ✅ (queue history)
 - [ ] **Configurações avançadas** - pasta de cache, qualidade, etc
 - [ ] **Modo offline** - indicar quando sem internet
 
@@ -127,4 +129,46 @@
 
 ---
 
+## 🏆 Milestones
+
+### ✅ Sprint 1 (COMPLETO - Feb 19, 2026)
+
+**Backend Core Features**
+- Auto-play next track with monitoring thread
+- Shuffle and repeat modes (off/one/all)
+- Progress bar support (position + percentage)
+- Seek functionality
+- Lyrics fetching (lyrics.ovh API)
+- Enhanced queue management
+- Complete API documentation
+
+**Pull Request:** [#1](https://github.com/Soldad17-u/spotify-youtube-player/pull/1)
+
+### 🔄 Sprint 2 (In Progress)
+
+**Frontend Integration**
+- Progress bar UI component
+- Shuffle/repeat buttons
+- Lyrics panel
+- Hotkeys (media keys + custom)
+- Desktop notifications
+- Mini player mode
+
+**Target:** Feb 22, 2026
+
+### 📅 Sprint 3 (Planned)
+
+**Polish & Features**
+- Equalizer
+- Playlist batch download
+- History & favorites
+- Theme customization
+- Performance optimizations
+
+**Target:** Feb 26, 2026
+
+---
+
 **Contribuições são bem-vindas!** Se quiser implementar alguma feature da lista, crie uma branch e abra um PR.
+
+**Current Progress:** 15/60+ features completed (25%)
