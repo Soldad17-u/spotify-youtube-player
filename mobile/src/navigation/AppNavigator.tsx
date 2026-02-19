@@ -1,66 +1,68 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
-import HomeScreen from '../screens/HomeScreen';
+import { NavigationContainer } from '@react-navigation/native';
+
+import SearchScreen from '../screens/SearchScreen';
 import PlayerScreen from '../screens/PlayerScreen';
 import PlaylistsScreen from '../screens/PlaylistsScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
+import HistoryScreen from '../screens/HistoryScreen';
+import StatisticsScreen from '../screens/StatisticsScreen';
+import EqualizerScreen from '../screens/EqualizerScreen';
 
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarStyle: {
-          backgroundColor: '#121212',
-          borderTopColor: '#282828',
-        },
-        tabBarActiveTintColor: '#1DB954',
-        tabBarInactiveTintColor: '#B3B3B3',
-        headerStyle: {
-          backgroundColor: '#000000',
-        },
-        headerTintColor: '#FFFFFF',
-      }}
-    >
-      <Tab.Screen
-        name="Search"
-        component={HomeScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search" size={size} color={color} />
-          ),
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: '#000000',
+            borderTopColor: '#1E1E1E',
+          },
+          tabBarActiveTintColor: '#1DB954',
+          tabBarInactiveTintColor: '#B3B3B3',
         }}
-      />
-      <Tab.Screen
-        name="Player"
-        component={PlayerScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="play-circle" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Playlists"
-        component={PlaylistsScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Favorites"
-        component={FavoritesScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="heart" size={size} color={color} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+      >
+        <Tab.Screen
+          name="Search"
+          component={SearchScreen}
+          options={{ tabBarLabel: '🔍 Search' }}
+        />
+        <Tab.Screen
+          name="Player"
+          component={PlayerScreen}
+          options={{ tabBarLabel: '▶️ Player' }}
+        />
+        <Tab.Screen
+          name="Playlists"
+          component={PlaylistsScreen}
+          options={{ tabBarLabel: '🎵 Playlists' }}
+        />
+        <Tab.Screen
+          name="Favorites"
+          component={FavoritesScreen}
+          options={{ tabBarLabel: '❤️ Favorites' }}
+        />
+        <Tab.Screen
+          name="History"
+          component={HistoryScreen}
+          options={{ tabBarLabel: '📜 History' }}
+        />
+        <Tab.Screen
+          name="Statistics"
+          component={StatisticsScreen}
+          options={{ tabBarLabel: '📊 Stats' }}
+        />
+        <Tab.Screen
+          name="Equalizer"
+          component={EqualizerScreen}
+          options={{ tabBarLabel: '🎚️ EQ' }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 };
 
