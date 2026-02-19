@@ -11,6 +11,7 @@ class AudioPlayer:
     - Shuffle e repeat modes
     - Monitoring thread para playback automático
     - Queue e history management
+    - Auto-tracking para UserData
     """
     
     def __init__(self):
@@ -30,6 +31,12 @@ class AudioPlayer:
         # Modos de reprodução
         self.shuffle_mode = False
         self.repeat_mode = 'off'  # 'off', 'one', 'all'
+        
+        # UserData integration (será definido externamente)
+        self.user_data = None
+        
+        # Track playback start time
+        self.track_start_time = None
         
         # Monitoring thread para auto-play
         self.should_monitor = True
@@ -54,7 +61,7 @@ class AudioPlayer:
                 # Detectar quando música acaba
                 if state == vlc.State.Ended and last_state != vlc.State.Ended:
                     print("Track ended, handling next...")
-                    self._handle_track_end()
+                    self._handle_track_end(completed=True)
                 
                 last_state = state
                 time.sleep(0.5)  # Checar 2x por segundo
@@ -63,14 +70,46 @@ class AudioPlayer:
                 print(f"Monitor error: {e}")
                 time.sleep(1)
     
-    def _handle_track_end(self):
+    def _track_to_history(self, completed: bool = True):
+        """
+        Adiciona track atual ao UserData history
+        
+        Args:
+            completed: Se a música foi ouvida até o fim (>30%)
+        """
+        if not self.current_track or not self.user_data:
+            return
+        
+        # Verificar se foi ouvida por tempo suficiente
+        if not completed and self.track_start_time:
+            elapsed = time.time() - self.track_start_time
+            duration = self.current_track.get('duration', 0)
+            
+            if duration > 0:
+                play_percentage = (elapsed / duration) * 100
+                # Considerar completado se ouviu pelo menos 30%
+                completed = play_percentage >= 30
+        
+        try:
+            self.user_data.add_to_history(self.current_track, completed)
+            print(f"Added to UserData history: {self.current_track.get('name', 'Unknown')}")
+        except Exception as e:
+            print(f"Error tracking to history: {e}")
+    
+    def _handle_track_end(self, completed: bool = True):
         """
         Lógica executada quando música acaba
+        
+        Args:
+            completed: Se a música foi completada
         """
-        # Adicionar ao histórico
+        # Adicionar ao histórico local
         if self.current_track:
             self.history.append(self.current_track)
             print(f"Added to history: {self.current_track.get('name', 'Unknown')}")
+            
+            # Track to UserData
+            self._track_to_history(completed)
         
         # Repeat one - repetir mesma música
         if self.repeat_mode == 'one':
@@ -110,6 +149,10 @@ class AudioPlayer:
             track_info: Metadados da música (opcional)
         """
         try:
+            # Se estava tocando outra música, marcar como não completada
+            if self.current_track and self.is_playing():
+                self._track_to_history(completed=False)
+            
             media = self.vlc_instance.media_new(file_path)
             self.player.set_media(media)
             self.player.play()
@@ -119,6 +162,9 @@ class AudioPlayer:
                 self.current_track = track_info
             else:
                 self.current_track = {'file_path': file_path}
+            
+            # Marcar início da reprodução
+            self.track_start_time = time.time()
             
             # Aguarda um pouco para garantir que começou
             time.sleep(0.1)
@@ -158,6 +204,8 @@ class AudioPlayer:
             if file_path:
                 self.player.stop()
                 time.sleep(0.1)
+                # Não marcar como completado ao repetir
+                self.track_start_time = time.time()
                 self.play(file_path, self.current_track)
     
     def pause(self):
@@ -180,6 +228,10 @@ class AudioPlayer:
         """
         Para reprodução
         """
+        # Track to history before stopping
+        if self.current_track and self.is_playing():
+            self._track_to_history(completed=False)
+        
         self.player.stop()
         print("Stopped")
     
@@ -326,6 +378,10 @@ class AudioPlayer:
         """
         print("AudioPlayer shutting down...")
         self.should_monitor = False
+        
+        # Track current song before shutdown
+        if self.current_track and self.is_playing():
+            self._track_to_history(completed=False)
         
         if hasattr(self, 'monitor_thread') and self.monitor_thread.is_alive():
             self.monitor_thread.join(timeout=2)
