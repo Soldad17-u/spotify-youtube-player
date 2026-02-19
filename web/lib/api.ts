@@ -22,6 +22,13 @@ export interface PlayerStatus {
   has_previous: boolean;
 }
 
+export interface EQSettings {
+  bass: number;
+  mid: number;
+  treble: number;
+  preset: string;
+}
+
 export const api = {
   // Search
   async search(query: string, limit = 20) {
@@ -104,6 +111,22 @@ export const api = {
     return res.json();
   },
 
+  // Equalizer
+  async getEqualizer(): Promise<EQSettings> {
+    const res = await fetch(`${API_URL}/equalizer`);
+    return res.json();
+  },
+
+  async setEQBand(band: 'bass' | 'mid' | 'treble', value: number) {
+    const res = await fetch(`${API_URL}/equalizer/${band}/${value}`, { method: 'POST' });
+    return res.json();
+  },
+
+  async applyEQPreset(preset: string) {
+    const res = await fetch(`${API_URL}/equalizer/preset/${preset}`, { method: 'POST' });
+    return res.json();
+  },
+
   // Favorites
   async getFavorites() {
     const res = await fetch(`${API_URL}/favorites`);
@@ -117,6 +140,18 @@ export const api = {
 
   async removeFavorite(trackId: string) {
     const res = await fetch(`${API_URL}/favorites/${trackId}`, { method: 'DELETE' });
+    return res.json();
+  },
+
+  // History
+  async getHistory(limit = 50) {
+    const res = await fetch(`${API_URL}/history?limit=${limit}`);
+    return res.json();
+  },
+
+  // Statistics
+  async getStatistics() {
+    const res = await fetch(`${API_URL}/statistics`);
     return res.json();
   },
 };
