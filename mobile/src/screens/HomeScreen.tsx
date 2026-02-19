@@ -1,183 +1,220 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  Image,
-  ActivityIndicator,
-  ScrollView,
+  TextInput,
+  FlatList,
   TouchableOpacity,
+  Image,
+  StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
-import { playerAPI, type PlayerStatus } from '../api/client';
-import { colors, spacing } from '../theme/colors';
-import PlayerControls from '../components/PlayerControls';
-import ProgressBar from '../components/ProgressBar';
+import { searchTracks, playTrack, addToQueue } from '../api/client';
+import type { Track } from '../types';
 
 const HomeScreen = () => {
-  const [status, setStatus] = useState<PlayerStatus | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
+  const [tracks, setTracks] = useState<Track[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const fetchStatus = async () => {
+  const handleSearch = async () => {
+    if (!query.trim()) return;
+
+    setLoading(true);
     try {
-      const response = await playerAPI.getStatus();
-      setStatus(response.data);
-      setError(null);
+      const results = await searchTracks(query);
+      setTracks(results);
     } catch (err) {
-      setError('Failed to connect to backend');
-      console.error(err);
+      console.error('Search failed:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchStatus();
-    const interval = setInterval(fetchStatus, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const handlePlay = async (trackId: string) => {
+    try {
+      await playTrack(trackId);
+    } catch (err) {
+      console.error('Play failed:', err);
+    }
+  };
 
-  if (loading) {
+  const handleAddToQueue = async (trackId: string) => {
+    try {
+      await addToQueue(trackId);
+    } catch (err) {
+      console.error('Add to queue failed:', err);
+    }
+  };
+
+  const renderTrack = ({ item }: { item: Track }) => {
+    const albumArt = item.album.images[0]?.url;
+    const artistNames = item.artists.map((a) => a.name).join(', ');
+    const durationMin = Math.floor(item.duration_ms / 60000);
+    const durationSec = Math.floor((item.duration_ms % 60000) / 1000);
+
     return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color={colors.primary} />
+      <View style={styles.trackItem}>
+        {albumArt && (
+          <Image source={{ uri: albumArt }} style={styles.albumArt} />
+        )}
+        <View style={styles.trackInfo}>
+          <Text style={styles.trackName} numberOfLines={1}>
+            {item.name}
+          </Text>
+          <Text style={styles.trackArtist} numberOfLines={1}>
+            {artistNames}
+          </Text>
+          <Text style={styles.trackDuration}>
+            {durationMin}:{durationSec.toString().padStart(2, '0')}
+          </Text>
+        </View>
+        <View style={styles.trackActions}>
+          <TouchableOpacity
+            onPress={() => handlePlay(item.id)}
+            style={styles.actionButton}
+          >
+            <Text style={styles.actionIcon}>▶️</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleAddToQueue(item.id)}
+            style={styles.actionButton}
+          >
+            <Text style={styles.actionIcon}>➕</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
-  }
-
-  if (error) {
-    return (
-      <View style={styles.center}>
-        <Text style={styles.errorText}>⚠️ {error}</Text>
-        <TouchableOpacity style={styles.retryButton} onPress={fetchStatus}>
-          <Text style={styles.retryText}>Retry</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
-  const track = status?.current_track;
+  };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {/* Album Art */}
-      <View style={styles.albumContainer}>
-        {track?.album_art ? (
-          <Image source={{ uri: track.album_art }} style={styles.albumArt} />
-        ) : (
-          <View style={[styles.albumArt, styles.albumPlaceholder]}>
-            <Text style={styles.placeholderText}>🎵</Text>
-          </View>
-        )}
+    <View style={styles.container}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search tracks..."
+          placeholderTextColor="#B3B3B3"
+          value={query}
+          onChangeText={setQuery}
+          onSubmitEditing={handleSearch}
+        />
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={handleSearch}
+          disabled={loading}
+        >
+          <Text style={styles.searchButtonText}>
+            {loading ? '⏳' : '🔍'}
+          </Text>
+        </TouchableOpacity>
       </View>
 
-      {/* Track Info */}
-      <View style={styles.trackInfo}>
-        <Text style={styles.trackName} numberOfLines={1}>
-          {track?.name || 'No track playing'}
-        </Text>
-        <Text style={styles.artistName} numberOfLines={1}>
-          {track?.artist || 'Select a track to play'}
-        </Text>
-      </View>
-
-      {/* Progress Bar */}
-      <ProgressBar
-        position={status?.position || 0}
-        duration={status?.duration || 0}
-        onSeek={(pos) => playerAPI.seek(pos)}
-      />
-
-      {/* Player Controls */}
-      <PlayerControls
-        isPlaying={status?.is_playing || false}
-        shuffle={status?.shuffle || false}
-        repeat={status?.repeat || 'off'}
-        onPlay={() => playerAPI.resume()}
-        onPause={() => playerAPI.pause()}
-        onNext={() => playerAPI.next()}
-        onShuffle={() => playerAPI.toggleShuffle()}
-        onRepeat={() => playerAPI.cycleRepeat()}
-      />
-
-      {/* Queue Info */}
-      <View style={styles.queueInfo}>
-        <Text style={styles.queueText}>
-          🎶 Queue: {status?.queue_length || 0} tracks
-        </Text>
-      </View>
-    </ScrollView>
+      {loading && tracks.length === 0 ? (
+        <ActivityIndicator size="large" color="#1DB954" style={styles.loader} />
+      ) : tracks.length > 0 ? (
+        <FlatList
+          data={tracks}
+          keyExtractor={(item) => item.id}
+          renderItem={renderTrack}
+          contentContainerStyle={styles.list}
+        />
+      ) : (
+        <View style={styles.emptyState}>
+          <Text style={styles.emptyText}>Search for your favorite music</Text>
+        </View>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#000000',
   },
-  content: {
-    padding: spacing.lg,
+  searchContainer: {
+    flexDirection: 'row',
+    padding: 16,
+    gap: 8,
   },
-  center: {
+  searchInput: {
+    flex: 1,
+    backgroundColor: '#282828',
+    color: '#FFFFFF',
+    padding: 12,
+    borderRadius: 24,
+    fontSize: 16,
+  },
+  searchButton: {
+    backgroundColor: '#1DB954',
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  searchButtonText: {
+    fontSize: 20,
+  },
+  list: {
+    padding: 16,
+  },
+  trackItem: {
+    flexDirection: 'row',
+    backgroundColor: '#121212',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 12,
+    alignItems: 'center',
+  },
+  albumArt: {
+    width: 60,
+    height: 60,
+    borderRadius: 4,
+    marginRight: 12,
+  },
+  trackInfo: {
+    flex: 1,
+  },
+  trackName: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  trackArtist: {
+    color: '#B3B3B3',
+    fontSize: 14,
+    marginBottom: 2,
+  },
+  trackDuration: {
+    color: '#B3B3B3',
+    fontSize: 12,
+  },
+  trackActions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  actionButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  actionIcon: {
+    fontSize: 20,
+  },
+  loader: {
+    marginTop: 40,
+  },
+  emptyState: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.background,
   },
-  albumContainer: {
-    alignItems: 'center',
-    marginVertical: spacing.xl,
-  },
-  albumArt: {
-    width: 300,
-    height: 300,
-    borderRadius: 12,
-  },
-  albumPlaceholder: {
-    backgroundColor: colors.card,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  placeholderText: {
-    fontSize: 80,
-  },
-  trackInfo: {
-    alignItems: 'center',
-    marginBottom: spacing.xl,
-  },
-  trackName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: colors.text,
-    marginBottom: spacing.xs,
-  },
-  artistName: {
-    fontSize: 18,
-    color: colors.textSecondary,
-  },
-  queueInfo: {
-    alignItems: 'center',
-    marginTop: spacing.lg,
-  },
-  queueText: {
-    fontSize: 14,
-    color: colors.textSecondary,
-  },
-  errorText: {
-    fontSize: 18,
-    color: colors.error,
-    marginBottom: spacing.lg,
-  },
-  retryButton: {
-    backgroundColor: colors.primary,
-    paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.md,
-    borderRadius: 24,
-  },
-  retryText: {
-    color: colors.text,
+  emptyText: {
+    color: '#B3B3B3',
     fontSize: 16,
-    fontWeight: 'bold',
   },
 });
 
