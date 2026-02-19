@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify YouTube Player</title>
+    <title>Spotify YouTube Player v3.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Custom Title Bar -->
     <div class="title-bar">
         <div class="title-bar-drag-region">
-            <span class="app-title">🎵 Spotify YouTube Player v2.0</span>
+            <span class="app-title">🎵 Spotify YouTube Player v3.0</span>
         </div>
         <div class="window-controls">
-            <button class="window-btn minimize-btn" id="minimizeBtn">−</button>
-            <button class="window-btn maximize-btn" id="maximizeBtn">□</button>
-            <button class="window-btn close-btn" id="closeBtn">✕</button>
+            <button class="window-btn minimize-btn" id="minimizeBtn" title="Minimizar">−</button>
+            <button class="window-btn maximize-btn" id="maximizeBtn" title="Maximizar">□</button>
+            <button class="window-btn close-btn" id="closeBtn" title="Fechar">✕</button>
         </div>
     </div>
 
@@ -38,8 +38,28 @@
                 </button>
             </div>
 
+            <div class="sidebar-section">
+                <h3>Suas Músicas</h3>
+                <button class="sidebar-item" data-view="favorites">
+                    <span>❤️</span> Favoritas
+                </button>
+                <button class="sidebar-item" data-view="history">
+                    <span>🕒</span> Histórico
+                </button>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Configurações</h3>
+                <button class="sidebar-item" data-view="equalizer">
+                    <span>🎚️</span> Equalizer
+                </button>
+                <button class="sidebar-item" data-view="statistics">
+                    <span>📊</span> Estatísticas
+                </button>
+            </div>
+
             <div class="sidebar-section playlists-list" id="playlistsList">
-                <h3>Suas Playlists</h3>
+                <h3>Playlists</h3>
                 <div class="loading">Carregando...</div>
             </div>
 
@@ -68,12 +88,15 @@
 
                 <div id="searchResults" class="results-grid">
                     <div class="welcome-message">
-                        <h2>🎵 Bem-vindo ao Spotify YouTube Player</h2>
+                        <h2>🎵 Bem-vindo ao Spotify YouTube Player v3.0</h2>
                         <p>Busque por músicas, artistas ou álbuns para começar</p>
                         <div class="features-list">
                             <span class="feature-badge">✅ Auto-play</span>
                             <span class="feature-badge">✅ Shuffle & Repeat</span>
                             <span class="feature-badge">✅ Letras</span>
+                            <span class="feature-badge">✅ Equalizer</span>
+                            <span class="feature-badge">✅ Histórico</span>
+                            <span class="feature-badge">✅ Favoritos</span>
                             <span class="feature-badge">✅ Sem anúncios</span>
                         </div>
                     </div>
@@ -111,6 +134,148 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Equalizer View -->
+            <div id="equalizerView" class="view">
+                <div class="equalizer-header">
+                    <h2>🎚️ Equalizer</h2>
+                    <div class="equalizer-actions">
+                        <button id="eqToggleBtn" class="btn-primary">Ativar</button>
+                        <select id="eqPresetSelect" class="eq-preset-select">
+                            <option value="">Selecione um preset...</option>
+                            <option value="flat">Flat (Neutro)</option>
+                            <option value="bass_boost">Bass Boost</option>
+                            <option value="treble_boost">Treble Boost</option>
+                            <option value="vocal">Vocal</option>
+                            <option value="rock">Rock</option>
+                            <option value="pop">Pop</option>
+                            <option value="classical">Classical</option>
+                            <option value="jazz">Jazz</option>
+                            <option value="electronic">Electronic</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="equalizer-content">
+                    <div class="equalizer-sliders">
+                        <!-- Bass -->
+                        <div class="eq-slider-container">
+                            <label class="eq-label">
+                                <span>🔊 Bass</span>
+                                <span id="bassValue" class="eq-value">0 dB</span>
+                            </label>
+                            <input 
+                                type="range" 
+                                id="bassSlider" 
+                                class="eq-slider" 
+                                min="-12" 
+                                max="12" 
+                                value="0" 
+                                step="1"
+                            />
+                        </div>
+
+                        <!-- Mid -->
+                        <div class="eq-slider-container">
+                            <label class="eq-label">
+                                <span>🎶 Mid</span>
+                                <span id="midValue" class="eq-value">0 dB</span>
+                            </label>
+                            <input 
+                                type="range" 
+                                id="midSlider" 
+                                class="eq-slider" 
+                                min="-12" 
+                                max="12" 
+                                value="0" 
+                                step="1"
+                            />
+                        </div>
+
+                        <!-- Treble -->
+                        <div class="eq-slider-container">
+                            <label class="eq-label">
+                                <span>🔊 Treble</span>
+                                <span id="trebleValue" class="eq-value">0 dB</span>
+                            </label>
+                            <input 
+                                type="range" 
+                                id="trebleSlider" 
+                                class="eq-slider" 
+                                min="-12" 
+                                max="12" 
+                                value="0" 
+                                step="1"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="equalizer-info">
+                        <p>🎵 Use os sliders para ajustar graves, médios e agudos (-12dB a +12dB)</p>
+                        <p>🎶 Selecione um preset acima para carregar configurações pré-definidas</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorites View -->
+            <div id="favoritesView" class="view">
+                <div class="favorites-header">
+                    <h2>❤️ Músicas Favoritas</h2>
+                    <span id="favoritesCount" class="favorites-count">0 músicas</span>
+                </div>
+                <div id="favoritesContent" class="results-grid">
+                    <div class="empty-state">
+                        <p>Nenhuma música favoritada ainda</p>
+                        <p>Clique no coração ❤️ para adicionar favoritos</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History View -->
+            <div id="historyView" class="view">
+                <div class="history-header">
+                    <h2>🕒 Histórico de Reprodução</h2>
+                    <div class="history-tabs">
+                        <button class="tab-btn active" data-tab="recent">Recentes</button>
+                        <button class="tab-btn" data-tab="most-played">Mais Tocadas</button>
+                    </div>
+                </div>
+                <div id="historyContent" class="history-content">
+                    <div id="recentTab" class="history-tab active">
+                        <div class="empty-state">Nenhuma música no histórico</div>
+                    </div>
+                    <div id="mostPlayedTab" class="history-tab">
+                        <div class="empty-state">Nenhuma música no histórico</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics View -->
+            <div id="statisticsView" class="view">
+                <h2>📊 Estatísticas de Uso</h2>
+                <div id="statisticsContent" class="statistics-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🎵</div>
+                        <div class="stat-value" id="statTotalPlays">0</div>
+                        <div class="stat-label">Reproduções Totais</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎶</div>
+                        <div class="stat-value" id="statUniqueTracks">0</div>
+                        <div class="stat-label">Músicas Únicas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-value" id="statListeningHours">0h</div>
+                        <div class="stat-label">Horas Ouvidas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">❤️</div>
+                        <div class="stat-value" id="statFavoritesCount">0</div>
+                        <div class="stat-label">Favoritas</div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -123,6 +288,11 @@
                 <div id="playerTrackName" class="player-track-name">Nenhuma música tocando</div>
                 <div id="playerArtistName" class="player-artist-name">-</div>
             </div>
+            <button id="heartBtn" class="control-btn heart-btn" title="Adicionar aos favoritos">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+            </button>
         </div>
 
         <!-- Playback Controls (Center) -->
@@ -151,7 +321,7 @@
                 </button>
                 <button id="repeatBtn" class="control-btn" title="Repetir (desligado)">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M0 4.75A3.75 3.75 0 013.75 1h8.5A3.75 3.75 0 0116 4.75v5a3.75 3.75 0 01-3.75 3.75H9.81l1.018 1.018a.75.75 0 11-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 111.06 1.06L9.811 12h2.439a2.25 2.25 0 002.25-2.25v-5a2.25 2.25 0 00-2.25-2.25h-8.5a2.25 2.25 0 00-2.25 2.25v5A2.25 2.25 0 013.75 12H5v1.5H3.75A3.75 3.75 0 010 9.75v-5z"/>
+                        <path d="M0 4.75A3.75 3.75 0 013.75 1h8.5A3.75 3.75 0 0116 4.75v5a3.75 3.75 0 01-3.75 3.75H9.81l1.018 1.018a.75.75 0 11-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 111.06 1.06L9.811 12h2.439a2.25 2.25 0 002.25-2.25v-5a2.25 2.25 0 00-2.25-2.25h-8.5a2.25 2.25 0 00-2.25 2.25v5A2.25 2.25 0 003.75 12H5v1.5H3.75A3.75 3.75 0 010 9.75v-5z"/>
                     </svg>
                 </button>
             </div>
@@ -189,6 +359,8 @@
     <!-- Toast Notifications Container -->
     <div id="toastContainer" class="toast-container"></div>
 
+    <!-- Scripts - Order matters! -->
+    <script src="window-controls.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
